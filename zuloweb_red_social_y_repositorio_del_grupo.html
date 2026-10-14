@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Evita que Google Drive / googleusercontent bloquee las imágenes con error 403 fuera de Canvas -->
-    <meta name="referrer" content="no-referrer">
     <title>ZuloWeb</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -115,7 +113,6 @@
 
         .pinterest-card {
             width: 100%;
-            min-height: 140px;
             display: block;
             position: relative;
             border-radius: 0.75rem;
@@ -123,7 +120,6 @@
             transform: translateZ(0);
             border: 1px solid rgba(197, 160, 89, 0.18);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.75);
-            background-color: #0d1017;
         }
 
         .pinterest-card:hover {
@@ -135,11 +131,9 @@
             width: 100% !important;
             max-width: 100% !important;
             height: auto !important;
-            min-height: 120px;
             margin: 0 !important;
             padding: 0 !important;
             border: 0;
-            object-fit: cover;
         }
 
         @keyframes heartBurst {
@@ -317,7 +311,7 @@
                 <!-- Perfil -->
                 <div class="relative">
                     <button id="userMenuBtn" class="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-xl bg-[#111622] border border-amber-500/25 hover:border-amber-500 transition">
-                        <img id="navUserAvatar" referrerpolicy="no-referrer" src="https://placehold.co/80x80/111622/c5a059?text=US" alt="Avatar" class="w-7 h-7 rounded-lg object-cover border border-amber-500/40">
+                        <img id="navUserAvatar" src="https://placehold.co/80x80/111622/c5a059?text=US" alt="Avatar" class="w-7 h-7 rounded-lg object-cover border border-amber-500/40">
                         <div class="text-left hidden md:block">
                             <p id="navUserName" class="text-xs font-bold leading-none text-white">Usuario</p>
                             <p class="text-[9px] font-mono uppercase tracking-widest text-amber-500 leading-tight mt-0.5">● Conectado</p>
@@ -327,7 +321,7 @@
 
                     <div id="userDropdown" class="hidden absolute right-0 mt-2 w-64 bg-[#0d1017] border border-amber-500/30 rounded-xl shadow-2xl p-3 z-40">
                         <div class="pb-3 mb-2 border-b border-slate-800 flex items-center gap-3">
-                            <img id="dropUserAvatar" referrerpolicy="no-referrer" src="https://placehold.co/80x80/111622/c5a059?text=US" alt="Avatar" class="w-10 h-10 rounded-lg object-cover border border-amber-500/40">
+                            <img id="dropUserAvatar" src="https://placehold.co/80x80/111622/c5a059?text=US" alt="Avatar" class="w-10 h-10 rounded-lg object-cover border border-amber-500/40">
                             <div class="overflow-hidden">
                                 <p id="dropUserName" class="text-sm font-bold text-white truncate">Usuario</p>
                                 <p class="text-[10px] font-mono uppercase tracking-wider text-amber-500 truncate">Sesión activa</p>
@@ -381,21 +375,6 @@
                     Carpeta: /fotos
                 </div>
             </div>
-        </div>
-
-        <!-- Aviso automático si Google Drive tiene la carpeta en modo Restringido y bloquea imágenes externas -->
-        <div id="drivePermissionBanner" class="hidden mb-5 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/40 text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div class="flex items-start gap-3">
-                <i class="fa-solid fa-circle-info text-amber-400 text-lg mt-0.5"></i>
-                <div class="text-xs leading-relaxed">
-                    <strong class="text-amber-300 block mb-0.5">¿Por qué alguna foto antigua de Drive no muestra su miniatura fuera de Canvas?</strong>
-                    Cuando abres el HTML desde tu ordenador (<code>file://</code>) o GitHub Pages, el navegador bloquea las imágenes de Google Drive si la carpeta <code>/fotos</code> está en modo "Restringido". 
-                    Asegúrate de que en tu Google Drive la carpeta principal (<code>1O76sINroVFYDOorAWeHrXdHlUtsNcdxI</code>) tenga activado <strong>Compartir → "Cualquier persona con el enlace (Lector)"</strong>. Las fotos nuevas que subas desde aquí guardan además una miniatura comprimida automática en la base de datos para verse siempre en cualquier navegador.
-                </div>
-            </div>
-            <button type="button" id="closePermissionBannerBtn" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-mono shrink-0">
-                Entendido
-            </button>
         </div>
 
         <div id="masonryContainer" class="pinterest-masonry"></div>
@@ -704,7 +683,7 @@
             <div class="lg:col-span-5 flex flex-col h-full max-h-[85vh] lg:max-h-[92vh] bg-[#0d1017] text-slate-100">
                 <div class="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
-                        <img id="modalAuthorAvatar" referrerpolicy="no-referrer" src="" alt="Autor" class="w-10 h-10 rounded-xl object-cover border border-amber-500/30 shrink-0">
+                        <img id="modalAuthorAvatar" src="" alt="Autor" class="w-10 h-10 rounded-xl object-cover border border-amber-500/30 shrink-0">
                         <div class="min-w-0">
                             <p class="text-[11px] text-slate-400">Subido por</p>
                             <h4 id="modalAuthorName" class="text-sm font-bold text-white truncate">Usuario</h4>
@@ -809,7 +788,6 @@
         let activeSort = 'newest';
         let currentOpenPinId = null;
         let uploadedDataUrl = null;
-        let uploadedCompressedPreview = null;
         let uploadedRawBase64 = null;
         let uploadedMimeType = 'image/jpeg';
         let uploadedFileName = '';
@@ -839,44 +817,6 @@
             const hasImageMime = Boolean(file.type && file.type.toLowerCase().startsWith('image/'));
             const hasImageExt = validExts.includes(ext);
             return hasImageMime || (file.type === '' && hasImageExt);
-        }
-
-        // Genera una miniatura ligera en base64 (~45KB) para guardarla en zuloweb_db.json
-        // Así las fotos se ven al instante en cualquier navegador aunque Drive bloquee cookies de terceros
-        function createCompressedPreviewDataUrl(sourceDataUrl, maxDimension = 900, quality = 0.76) {
-            return new Promise((resolve) => {
-                if (!sourceDataUrl) {
-                    resolve(null);
-                    return;
-                }
-                const img = new Image();
-                img.onload = () => {
-                    try {
-                        let w = img.naturalWidth || 800;
-                        let h = img.naturalHeight || 600;
-                        if (w > maxDimension || h > maxDimension) {
-                            if (w > h) {
-                                h = Math.round((h * maxDimension) / w);
-                                w = maxDimension;
-                            } else {
-                                w = Math.round((w * maxDimension) / h);
-                                h = maxDimension;
-                            }
-                        }
-                        const canvas = document.createElement('canvas');
-                        canvas.width = w;
-                        canvas.height = h;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, w, h);
-                        const compressed = canvas.toDataURL('image/webp', quality);
-                        resolve(compressed.startsWith('data:image/webp') ? compressed : canvas.toDataURL('image/jpeg', quality));
-                    } catch (e) {
-                        resolve(null);
-                    }
-                };
-                img.onerror = () => resolve(null);
-                img.src = sourceDataUrl;
-            });
         }
 
         function loadLocalCache() {
@@ -922,9 +862,8 @@
             } catch (e) {}
         }
 
-        // URL primaria más compatible fuera de Canvas con referrerpolicy="no-referrer"
         function getDriveDirectImageUrl(driveId) {
-            return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1600`;
+            return `https://lh3.googleusercontent.com/d/${driveId}=w1400`;
         }
 
         function getDriveEmbedPreviewUrl(driveId) {
@@ -934,74 +873,6 @@
         function getDriveDirectDownloadUrl(driveId) {
             return `https://drive.google.com/uc?export=download&id=${driveId}`;
         }
-
-        // Cadena de respaldo multicapa si una imagen de Google Drive falla al cargarse fuera de Canvas
-        window.handleDriveImgError = async function(imgEl, driveId, pinTitle) {
-            if (!imgEl) return;
-            const step = Number(imgEl.dataset.fallbackStep || '0');
-
-            if (driveId && step === 0) {
-                imgEl.dataset.fallbackStep = '1';
-                imgEl.src = `https://lh3.googleusercontent.com/d/${driveId}=w1600`;
-                return;
-            }
-            if (driveId && step === 1) {
-                imgEl.dataset.fallbackStep = '2';
-                imgEl.src = `https://drive.google.com/uc?export=view&id=${driveId}`;
-                return;
-            }
-            if (driveId && step === 2) {
-                imgEl.dataset.fallbackStep = '3';
-                imgEl.src = `https://drive.google.com/uc?export=download&id=${driveId}`;
-                return;
-            }
-            if (driveId && step === 3) {
-                imgEl.dataset.fallbackStep = '4';
-                // Intenta pedir el base64 directamente al puente de Apps Script por si la carpeta es privada
-                try {
-                    const res = await fetch(`${PRIVATE_BRIDGE_URL}?key=${encodeURIComponent(SECRET_REGISTER_KEY)}&action=get_file&id=${encodeURIComponent(driveId)}`);
-                    const data = await res.json();
-                    const b64 = data.base64 || data.dataUrl;
-                    if (b64) {
-                        const fullDataUrl = b64.startsWith('data:') ? b64 : `data:${data.mimeType || 'image/jpeg'};base64,${b64}`;
-                        imgEl.src = fullDataUrl;
-                        if (pinMetadataMap[driveId]) {
-                            pinMetadataMap[driveId].previewDataUrl = await createCompressedPreviewDataUrl(fullDataUrl, 850, 0.75);
-                            pushDatabaseToDrive();
-                        }
-                        return;
-                    }
-                } catch (err) {}
-
-                // Si todos los enlaces directos de <img> están bloqueados por permisos de Drive en el navegador,
-                // mostramos el visor embebido de Drive o una tarjeta visual limpia y activamos el aviso de permisos
-                const banner = document.getElementById('drivePermissionBanner');
-                if (banner) banner.classList.remove('hidden');
-
-                const parent = imgEl.parentElement;
-                if (parent) {
-                    const isModal = parent.id === 'modalMediaContainer';
-                    if (isModal && driveId) {
-                        parent.innerHTML = `
-                            <iframe src="${getDriveEmbedPreviewUrl(driveId)}" allow="autoplay; fullscreen"
-                                class="w-full h-[75vh] border-0 bg-black rounded-xl"></iframe>
-                        `;
-                    } else {
-                        parent.innerHTML = `
-                            <div class="w-full min-h-[220px] bg-gradient-to-br from-[#141926] to-[#0a0d14] p-5 flex flex-col items-center justify-center text-center border-b border-amber-500/20">
-                                <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center text-xl mb-2.5">
-                                    <i class="fa-solid fa-image"></i>
-                                </div>
-                                <p class="font-display font-bold text-xs sm:text-sm text-white line-clamp-2 px-2">${pinTitle || 'Foto en Google Drive'}</p>
-                                <span class="text-[10px] font-mono text-amber-400/90 mt-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25">
-                                    Haz clic para abrir / descargar
-                                </span>
-                            </div>
-                        `;
-                    }
-                }
-            }
-        };
 
         async function triggerDeviceDownload({ driveId, localUrl, fallbackUrl, filename, isImage }) {
             const safeName = (filename || 'zuloweb_archivo').trim();
@@ -1020,7 +891,7 @@
             if (driveId && isImage) {
                 try {
                     const imgFetchUrl = `https://lh3.googleusercontent.com/d/${driveId}=d`;
-                    const response = await fetch(imgFetchUrl, { referrerPolicy: 'no-referrer' });
+                    const response = await fetch(imgFetchUrl);
                     if (response.ok) {
                         const blob = await response.blob();
                         const blobUrl = URL.createObjectURL(blob);
@@ -1202,16 +1073,7 @@
                         });
                     }
                     if (data.db.pinMetadataMap && typeof data.db.pinMetadataMap === 'object') {
-                        // Conserva previewDataUrl en caché si ya existe localmente
-                        Object.keys(data.db.pinMetadataMap).forEach(k => {
-                            const remoteMeta = data.db.pinMetadataMap[k] || {};
-                            const localMeta = pinMetadataMap[k] || {};
-                            pinMetadataMap[k] = {
-                                ...remoteMeta,
-                                ...localMeta,
-                                previewDataUrl: remoteMeta.previewDataUrl || localMeta.previewDataUrl || null
-                            };
-                        });
+                        pinMetadataMap = { ...data.db.pinMetadataMap, ...pinMetadataMap };
                     }
                     saveLocalCache();
                 }
@@ -1224,14 +1086,6 @@
                 } else if (Array.isArray(data.files)) {
                     combinedFiles = data.files;
                 }
-
-                // Preservar localPreviewUrl de las fotos recién subidas en la sesión actual
-                const existingLocalPreviews = {};
-                pinsData.forEach(p => {
-                    if (p.driveId && p.localPreviewUrl) {
-                        existingLocalPreviews[p.driveId] = p.localPreviewUrl;
-                    }
-                });
 
                 const newPins = [];
                 const newRepoFiles = [];
@@ -1255,9 +1109,6 @@
                             customCategories.push(pinCategory);
                         }
                         const pinCreatedAt = Number(meta.createdAt) || Number(df.updated) || Date.now();
-                        const scriptDataUrl = df.dataUrl || (df.base64 ? `data:${df.mimeType || 'image/jpeg'};base64,${df.base64}` : null);
-                        const bestPreviewUrl = existingLocalPreviews[df.id] || meta.previewDataUrl || scriptDataUrl || null;
-
                         newPins.push({
                             id: 'pin-' + df.id,
                             driveId: df.id,
@@ -1267,7 +1118,6 @@
                             mediaType: 'image',
                             ratioLabel: meta.ratioLabel || formatBytes(Number(df.size)),
                             mediaUrl: getDriveDirectImageUrl(df.id),
-                            localPreviewUrl: bestPreviewUrl,
                             folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
                             author: { name: authorName, avatar: authorAvatar },
                             peopleInPhoto: Array.isArray(meta.peopleInPhoto) && meta.peopleInPhoto.length > 0 ? meta.peopleInPhoto : [authorName],
@@ -1558,13 +1408,12 @@
             const myName = currentUser ? currentUser.name : '';
             const isLiked = pin.likes.includes(myName);
             const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
-            const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
             return `
                 <article class="pinterest-card group cursor-pointer bg-[#0d1017] transition-all duration-300" data-pin-id="${pin.id}">
                     <div class="relative w-full">
-                        <img src="${imgSrc}" alt="${escapedTitle}" referrerpolicy="no-referrer"
-                            onerror="window.handleDriveImgError(this, '${pin.driveId || ''}', '${escapedTitle}')"
+                        <img src="${imgSrc}" alt="${pin.title}" loading="lazy"
+                            onerror="if(!this.dataset.triedThumb && '${pin.driveId || ''}'){this.dataset.triedThumb='1';this.src='https://drive.google.com/thumbnail?id=${pin.driveId || ''}&sz=w1200';}"
                             class="pinterest-media transition duration-700 ease-out group-hover:scale-[1.02]">
                     </div>
                     <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -1675,7 +1524,6 @@
         function savePinMeta(pin) {
             const key = pin.driveId || pin.title;
             if (!key) return;
-            const existingPreview = pinMetadataMap[key]?.previewDataUrl || pin.localPreviewUrl || null;
             pinMetadataMap[key] = {
                 subfolder: 'fotos',
                 title: pin.title,
@@ -1688,8 +1536,7 @@
                 timestamp: pin.timestamp,
                 createdAt: pin.createdAt,
                 likes: pin.likes,
-                comments: pin.comments,
-                previewDataUrl: existingPreview
+                comments: pin.comments
             };
             pushDatabaseToDrive();
         }
@@ -1701,11 +1548,9 @@
 
             const mediaContainer = document.getElementById('modalMediaContainer');
             const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
-            const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-
             mediaContainer.innerHTML = `
-                <img src="${imgSrc}" alt="${escapedTitle}" referrerpolicy="no-referrer"
-                    onerror="window.handleDriveImgError(this, '${pin.driveId || ''}', '${escapedTitle}')"
+                <img src="${imgSrc}" alt="${pin.title}"
+                    onerror="if(!this.dataset.triedThumb && '${pin.driveId || ''}'){this.dataset.triedThumb='1';this.src='https://drive.google.com/thumbnail?id=${pin.driveId || ''}&sz=w1400';}"
                     class="w-full h-full max-h-[85vh] object-contain select-none">
             `;
 
@@ -1804,7 +1649,7 @@
                 const isMyComment = myName && (c.author || '').toLowerCase() === myName;
                 return `
                 <div class="flex items-start gap-2.5 bg-slate-900/60 p-3 rounded-2xl border border-slate-800 group">
-                    <img src="${c.avatar}" referrerpolicy="no-referrer" alt="${c.author}" class="w-7 h-7 rounded-lg object-cover shrink-0 mt-0.5">
+                    <img src="${c.avatar}" alt="${c.author}" class="w-7 h-7 rounded-lg object-cover shrink-0 mt-0.5">
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between gap-2">
                             <span class="text-xs font-bold text-white">${c.author}</span>
@@ -1935,7 +1780,7 @@
                 `;
             } else if (file.type === 'image') {
                 body.innerHTML = `
-                    <img src="${file.url}" referrerpolicy="no-referrer" alt="${file.title}" class="max-h-[68vh] w-auto object-contain rounded-xl shadow-2xl">
+                    <img src="${file.url}" alt="${file.title}" class="max-h-[68vh] w-auto object-contain rounded-xl shadow-2xl">
                 `;
             } else if (file.type === 'video') {
                 body.innerHTML = `
@@ -2178,13 +2023,6 @@
             renderRepoFolderTabs();
             renderRepoFiles();
             updateCounters();
-
-            const closePermBannerBtn = document.getElementById('closePermissionBannerBtn');
-            if (closePermBannerBtn) {
-                closePermBannerBtn.addEventListener('click', () => {
-                    document.getElementById('drivePermissionBanner')?.classList.add('hidden');
-                });
-            }
 
             await syncFromPrivateDriveFolder(true);
 
@@ -2524,7 +2362,6 @@
 
             function resetUploadModalState() {
                 uploadedDataUrl = null;
-                uploadedCompressedPreview = null;
                 uploadedRawBase64 = null;
                 uploadedRatioLabel = null;
                 if (localFileInput) localFileInput.value = '';
@@ -2577,11 +2414,9 @@
                 uploadedFileName = file.name;
 
                 const reader = new FileReader();
-                reader.onload = async (ev) => {
+                reader.onload = (ev) => {
                     uploadedDataUrl = ev.target.result;
                     uploadedRawBase64 = uploadedDataUrl.split(',')[1] || null;
-                    uploadedCompressedPreview = await createCompressedPreviewDataUrl(uploadedDataUrl, 900, 0.76);
-
                     const ph = document.getElementById('uploadPreviewPlaceholder');
                     const pc = document.getElementById('uploadPreviewContainer');
                     const fn = document.getElementById('uploadFileNameText');
@@ -2664,7 +2499,6 @@
                     }
 
                     const finalFilename = uploadedFileName || `${title}.jpg`;
-                    const previewForDb = uploadedCompressedPreview || await createCompressedPreviewDataUrl(uploadedDataUrl, 900, 0.76);
                     const createdDriveId = await uploadToPrivateDriveBridge(finalFilename, uploadedMimeType, uploadedRawBase64, 'fotos');
                     const now = Date.now();
                     const formattedTime = formatDateTime(now);
@@ -2678,7 +2512,7 @@
                         mediaType: uploadedMediaType,
                         ratioLabel: uploadedRatioLabel || 'Original',
                         mediaUrl: createdDriveId ? getDriveDirectImageUrl(createdDriveId) : uploadedDataUrl,
-                        localPreviewUrl: previewForDb || uploadedDataUrl,
+                        localPreviewUrl: uploadedDataUrl,
                         folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
                         author: { ...authorObj },
                         peopleInPhoto,
@@ -2700,8 +2534,7 @@
                         timestamp: formattedTime,
                         createdAt: now,
                         likes: [],
-                        comments: [],
-                        previewDataUrl: previewForDb
+                        comments: []
                     };
                     if (createdDriveId) pinMetadataMap[createdDriveId] = metaRecord;
                     pinMetadataMap[finalFilename] = metaRecord;
