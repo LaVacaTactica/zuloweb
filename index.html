@@ -6,6 +6,8 @@
     <!-- Evita que Google Drive / googleusercontent bloquee las imágenes con error 403 fuera de Canvas -->
     <meta name="referrer" content="no-referrer">
     <title>ZuloWeb</title>
+    <!-- Favicon Z Elegante -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a0d14' stroke='%23c5a059' stroke-width='3'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel, Georgia, serif' font-weight='700' font-size='40' fill='%23d4b46a'%3EZ%3C/text%3E%3C/svg%3E">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cinzel, Inter & JetBrains Mono -->
@@ -195,10 +197,24 @@
         </div>
 
         <div class="relative w-full max-w-md bg-[#0a0d14] border border-amber-500/25 rounded-2xl shadow-[0_25px_70px_-15px_rgba(0,0,0,0.9)] p-7 sm:p-10 text-slate-100 flex flex-col justify-center my-auto">
-            <!-- Icono superior en grande -->
+            <!-- Icono superior en grande (Z Elegante) -->
             <div class="flex justify-center mb-7">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400/20 to-amber-600/5 flex items-center justify-center border border-amber-500/40 shadow-[0_0_35px_rgba(197,160,89,0.15)]">
-                    <i class="fa-solid fa-layer-group text-4xl text-amber-400"></i>
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400/20 via-[#0d111a] to-amber-600/10 flex items-center justify-center border border-amber-500/40 shadow-[0_0_35px_rgba(197,160,89,0.18)] relative overflow-hidden">
+                    <svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="goldGradLogin" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f3dfb2" />
+                                <stop offset="50%" stop-color="#c5a059" />
+                                <stop offset="100%" stop-color="#8f6b29" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Marco interior sutil estilo emblema -->
+                        <path d="M32 4L58 32L32 60L6 32L32 4Z" stroke="url(#goldGradLogin)" stroke-opacity="0.22" stroke-width="1.2" />
+                        <!-- Monograma Z serif de doble trazo -->
+                        <path d="M18 16H46L23 48H46" stroke="url(#goldGradLogin)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M23 16L17 22M46 48L48 41" stroke="url(#goldGradLogin)" stroke-width="2.5" stroke-linecap="round" />
+                        <line x1="23" y1="32" x2="41" y2="32" stroke="url(#goldGradLogin)" stroke-width="2.2" stroke-linecap="round" />
+                    </svg>
                 </div>
             </div>
 
@@ -279,8 +295,19 @@
             
             <div class="flex items-center gap-3">
                 <button type="button" id="brandHomeBtn" class="flex items-center gap-3 text-left group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#161b26] to-[#0a0d14] flex items-center justify-center text-amber-400 border border-amber-500/40 shadow-md group-hover:border-amber-400 transition">
-                        <i class="fa-solid fa-layer-group text-lg"></i>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#161b26] to-[#0a0d14] flex items-center justify-center text-amber-400 border border-amber-500/40 shadow-md group-hover:border-amber-400 transition relative overflow-hidden">
+                        <svg class="w-6 h-6 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="goldGradHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#f3dfb2" />
+                                    <stop offset="50%" stop-color="#c5a059" />
+                                    <stop offset="100%" stop-color="#8f6b29" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M18 16H46L23 48H46" stroke="url(#goldGradHeader)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M23 16L17 22M46 48L48 41" stroke="url(#goldGradHeader)" stroke-width="3" stroke-linecap="round" />
+                            <line x1="23" y1="32" x2="41" y2="32" stroke="url(#goldGradHeader)" stroke-width="2.8" stroke-linecap="round" />
+                        </svg>
                     </div>
                     <div class="flex items-center gap-2.5">
                         <span class="font-display font-bold text-xl tracking-[0.1em] uppercase text-white">ZuloWeb</span>
@@ -755,11 +782,46 @@
             </div>
 
             <form id="addFileForm" class="space-y-4">
-                <div id="modalRepoFileDrop" class="border-2 border-dashed border-emerald-500/40 hover:border-amber-500 rounded-2xl p-4 text-center cursor-pointer bg-slate-900/50 transition">
+                <div id="modalRepoFileDrop" class="border-2 border-dashed border-emerald-500/40 hover:border-amber-500 rounded-2xl p-5 text-center cursor-pointer bg-slate-900/50 transition">
                     <input type="file" id="modalRepoFileInput" class="hidden">
                     <i class="fa-solid fa-file-circle-plus text-2xl text-emerald-500 mb-1"></i>
-                    <p id="modalRepoFileLabel" class="text-xs font-semibold">Haz clic aquí para elegir el archivo de tu dispositivo *</p>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Se guardará directamente en la carpeta <code>archivos</code> de tu Google Drive</p>
+                    <p id="modalRepoFileLabel" class="text-xs font-semibold">Haz clic aquí para elegir el archivo o vídeo de tu dispositivo *</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Soporta vídeos largos y archivos pesados (100 MB, 500 MB, +1 GB) con subida directa por bloques</p>
+                </div>
+
+                <!-- Barra de progreso dentro del modal -->
+                <div id="modalRepoUploadProgressBox" class="hidden bg-[#06080c] p-3.5 rounded-xl border border-amber-500/30">
+                    <div class="flex items-center justify-between text-xs font-mono font-semibold mb-1.5">
+                        <span id="modalRepoUploadStatusText" class="text-amber-400 truncate">Iniciando subida directa...</span>
+                        <span id="modalRepoUploadPercentText" class="text-emerald-400">0%</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="modalRepoUploadProgressBar" class="h-full bg-gradient-to-r from-[#d4b46a] via-amber-400 to-emerald-400 w-0 transition-all duration-150"></div>
+                    </div>
+                </div>
+
+                <!-- Asistente automático de 1 sola vez si el puente de Apps Script aún no devuelve accessToken para archivos >25MB -->
+                <div id="bridgeUpgradeNoticeModal" class="hidden p-4 rounded-2xl bg-slate-950 border border-amber-500/40 text-xs space-y-2.5">
+                    <div class="flex items-start justify-between gap-2">
+                        <strong class="text-amber-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt"></i> Activa la subida directa ilimitada (+500 MB / GB) en tu puente
+                        </strong>
+                        <button type="button" id="copyBridgeSnippetBtn" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] shrink-0 transition">
+                            <i class="fa-regular fa-copy mr-1"></i> Copiar código
+                        </button>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed">
+                        Para subir vídeos gigantes directamente desde la web a máxima velocidad sin límite de 50 MB, añade estas 3 líneas al principio de <code>doGet(e)</code> y <code>doPost(e)</code> en tu Google Apps Script y pulsa <strong>Implementar → Nueva versión</strong>:
+                    </p>
+                    <pre id="bridgeSnippetCode" class="p-2.5 rounded-xl bg-black/90 border border-slate-800 text-[10px] font-mono text-emerald-400 overflow-x-auto select-all">if ((e.parameter && e.parameter.action === 'get_upload_token') || (typeof data !== 'undefined' && data.action === 'get_upload_token')) {
+  var root = DriveApp.getFolderById('1O76sINroVFYDOorAWeHrXdHlUtsNcdxI');
+  var it = root.getFoldersByName('archivos');
+  var folder = it.hasNext() ? it.next() : root.createFolder('archivos');
+  return ContentService.createTextOutput(JSON.stringify({
+    token: ScriptApp.getOAuthToken(),
+    folderId: folder.getId()
+  })).setMimeType(ContentService.MimeType.JSON);
+}</pre>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1000,7 +1062,8 @@
     <!-- ========================================================== -->
     <script>
         const EXCLUSIVE_DRIVE_FOLDER_ID = '1O76sINroVFYDOorAWeHrXdHlUtsNcdxI';
-        const PRIVATE_BRIDGE_URL = 'https://script.google.com/macros/s/AKfycbwSWdQtG9YVUbuoDWkt-6P7cXwnr36yoxe0OQrow7Z8IHMjDhXOKhGJi8e3T9nuLhqnVQ/exec';
+        const PRIVATE_BRIDGE_URL = 'https://script.google.com/macros/s/AKfycbzrEiqEhKhcWJjKp7rk850SQYSIjlmiLtgMyjxIncHtK4gXo9IngnEpzzb_tHluh-bO/exec';
+        
         const SECRET_REGISTER_KEY = 'prueba';
         const LOCAL_STORAGE_KEY = 'zuloweb_clean_prod_v2';
         const SESSION_USER_KEY = 'zuloweb_active_session_v2';
@@ -1030,9 +1093,233 @@
         let repoSearchQuery = '';
         let repoViewMode = 'grid';
         let pendingRepoLocalFile = null;
-        let pendingRepoRawBase64 = null;
         let activeProfileSubTab = 'photos';
         let pendingDeleteTarget = null; // { type: 'pin' | 'file', id: string }
+
+        // Umbral a partir del cual se prioriza Resumable Upload binario o subida por partes sin inflar la RAM
+        const DIRECT_BRIDGE_SAFE_LIMIT = 22 * 1024 * 1024; // 22 MB
+
+        // Convierte únicamente un fragmento (Blob/File pequeño) a Base64 sin duplicar archivos grandes en RAM
+        function blobSliceToBase64(blobSlice) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const res = reader.result || '';
+                    const commaIdx = res.indexOf(',');
+                    resolve(commaIdx !== -1 ? res.slice(commaIdx + 1) : res);
+                };
+                reader.onerror = () => reject(reader.error);
+                reader.readAsDataURL(blobSlice);
+            });
+        }
+
+        // Solicita al puente de Apps Script un token OAuth temporal y el ID de la subcarpeta (/archivos o /fotos)
+        async function fetchDriveUploadCredentials(targetSubfolder = 'archivos') {
+            if (!PRIVATE_BRIDGE_URL) return null;
+            try {
+                const getRes = await fetch(`${PRIVATE_BRIDGE_URL}?key=${encodeURIComponent(SECRET_REGISTER_KEY)}&action=get_upload_token&subfolder=${encodeURIComponent(targetSubfolder)}&folderId=${EXCLUSIVE_DRIVE_FOLDER_ID}&t=${Date.now()}`);
+                const getData = await getRes.json();
+                if (getData && (getData.token || getData.accessToken)) {
+                    return {
+                        token: getData.token || getData.accessToken,
+                        folderId: getData.archivosFolderId || getData.folderId || EXCLUSIVE_DRIVE_FOLDER_ID
+                    };
+                }
+            } catch (e) {}
+
+            try {
+                const postRes = await fetch(PRIVATE_BRIDGE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        key: SECRET_REGISTER_KEY,
+                        action: 'get_upload_token',
+                        subfolder: targetSubfolder,
+                        folderId: EXCLUSIVE_DRIVE_FOLDER_ID
+                    })
+                });
+                const postData = await postRes.json();
+                if (postData && (postData.token || postData.accessToken)) {
+                    return {
+                        token: postData.token || postData.accessToken,
+                        folderId: postData.archivosFolderId || postData.folderId || EXCLUSIVE_DRIVE_FOLDER_ID
+                    };
+                }
+            } catch (e) {}
+
+            return null;
+        }
+
+        // Sube un archivo de CUALQUIER tamaño (100MB, 500MB, 2GB...) directamente desde el navegador a la API de Google Drive
+        // leyendo del disco duro solo el bloque actual con file.slice() (consumo de RAM constante < 16MB)
+        async function uploadLargeFileDirectToDriveAPI(file, customTitle, targetSubfolder, onProgress) {
+            const creds = await fetchDriveUploadCredentials(targetSubfolder);
+            if (!creds || !creds.token) {
+                return { driveId: null, reason: 'no_token' };
+            }
+
+            const finalName = (customTitle || file.name).trim();
+            const mimeType = file.type || 'application/octet-stream';
+            const totalSize = file.size;
+
+            // 1. Iniciar sesión Resumable en Google Drive API v3
+            const initRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${creds.token}`,
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'X-Upload-Content-Type': mimeType,
+                    'X-Upload-Content-Length': String(totalSize)
+                },
+                body: JSON.stringify({
+                    name: finalName,
+                    parents: [creds.folderId || EXCLUSIVE_DRIVE_FOLDER_ID]
+                })
+            });
+
+            if (!initRes.ok) {
+                return { driveId: null, reason: 'init_failed' };
+            }
+
+            const uploadUrl = initRes.headers.get('Location');
+            if (!uploadUrl) {
+                return { driveId: null, reason: 'no_location' };
+            }
+
+            // 2. Si el archivo es menor de 45 MB, lo enviamos en un único flujo binario con XHR para progreso exacto al 1%
+            if (totalSize <= 45 * 1024 * 1024) {
+                const uploadedFileObj = await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('PUT', uploadUrl, true);
+                    xhr.setRequestHeader('Content-Type', mimeType);
+                    xhr.upload.onprogress = (ev) => {
+                        if (ev.lengthComputable && typeof onProgress === 'function') {
+                            onProgress(Math.round((ev.loaded / ev.total) * 100), ev.loaded, ev.total);
+                        }
+                    };
+                    xhr.onload = () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try { resolve(JSON.parse(xhr.responseText)); } catch (e) { resolve({}); }
+                        } else {
+                            reject(new Error(`HTTP ${xhr.status}`));
+                        }
+                    };
+                    xhr.onerror = () => reject(new Error('Network error'));
+                    xhr.send(file);
+                });
+
+                return { driveId: uploadedFileObj && uploadedFileObj.id ? uploadedFileObj.id : null, reason: 'ok' };
+            }
+
+            // 3. Para vídeos muy grandes (>45 MB hasta varios GB), enviamos en bloques de 16 MB (múltiplo de 256 KB requerido por Google)
+            const CHUNK_SIZE = 16 * 1024 * 1024; // 16 MB
+            let offset = 0;
+
+            while (offset < totalSize) {
+                const chunkEnd = Math.min(offset + CHUNK_SIZE, totalSize);
+                const chunkBlob = file.slice(offset, chunkEnd);
+
+                const res = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Range': `bytes ${offset}-${chunkEnd - 1}/${totalSize}`
+                    },
+                    body: chunkBlob
+                });
+
+                if (res.status === 308) {
+                    // Bloque recibido por Google Drive, continuamos con el siguiente
+                    offset = chunkEnd;
+                    if (typeof onProgress === 'function') {
+                        onProgress(Math.round((offset / totalSize) * 100), offset, totalSize);
+                    }
+                } else if (res.ok) {
+                    const resultJson = await res.json();
+                    if (typeof onProgress === 'function') {
+                        onProgress(100, totalSize, totalSize);
+                    }
+                    return { driveId: resultJson.id || null, reason: 'ok' };
+                } else {
+                    throw new Error(`Error en bloque: HTTP ${res.status}`);
+                }
+            }
+
+            return { driveId: null, reason: 'unknown' };
+        }
+
+        // Subida por fragmentos vía Apps Script (para cuando el script aún no tiene get_upload_token)
+        // Envía bloques pequeños de 4.5 MB para no superar jamás la memoria RAM ni el límite de Google Apps Script
+        async function uploadFileSmart(file, customTitle, targetSubfolder, onProgress) {
+            const finalName = (customTitle || file.name).trim();
+            const mimeType = file.type || 'application/octet-stream';
+
+            // Intento 1: Subida directa de alta velocidad a la API de Google Drive (soporta GBs sin límite)
+            try {
+                const directResult = await uploadLargeFileDirectToDriveAPI(file, finalName, targetSubfolder, onProgress);
+                if (directResult && directResult.driveId) {
+                    return { driveId: directResult.driveId, mode: 'direct_api' };
+                }
+            } catch (e) {}
+
+            // Intento 2: Si el archivo cabe en el límite del puente Apps Script (<= 22 MB), convertimos solo ese archivo sin colapsar
+            if (file.size <= DIRECT_BRIDGE_SAFE_LIMIT) {
+                if (typeof onProgress === 'function') onProgress(25, file.size * 0.25, file.size);
+                const base64String = await blobSliceToBase64(file);
+                if (typeof onProgress === 'function') onProgress(75, file.size * 0.75, file.size);
+                const createdId = await uploadToPrivateDriveBridge(finalName, mimeType, base64String, targetSubfolder);
+                if (typeof onProgress === 'function') onProgress(100, file.size, file.size);
+                return { driveId: createdId, mode: 'bridge_single' };
+            }
+
+            // Intento 3: Si el archivo es grande (>22 MB) y el puente Apps Script aún no tiene get_upload_token,
+            // probamos subida por bloques (chunked append) al puente leyendo solo 4.5 MB cada vez para que la página NUNCA explote
+            const BRIDGE_CHUNK_BYTES = 4.5 * 1024 * 1024; // 4.5 MB (múltiplo exacto de 3 bytes: 4718592)
+            const safeChunkSize = 4718592;
+            const totalChunks = Math.ceil(file.size / safeChunkSize);
+            let appendedDriveId = null;
+
+            for (let idx = 0; idx < totalChunks; idx++) {
+                const start = idx * safeChunkSize;
+                const end = Math.min(start + safeChunkSize, file.size);
+                const sliceBlob = file.slice(start, end);
+                const chunkB64 = await blobSliceToBase64(sliceBlob);
+
+                try {
+                    const res = await fetch(PRIVATE_BRIDGE_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({
+                            key: SECRET_REGISTER_KEY,
+                            action: 'upload_chunk',
+                            folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
+                            subfolder: targetSubfolder,
+                            folder: targetSubfolder,
+                            filename: finalName,
+                            mimeType: mimeType,
+                            chunkIndex: idx,
+                            totalChunks: totalChunks,
+                            fileId: appendedDriveId,
+                            base64: chunkB64
+                        })
+                    });
+                    const data = await res.json();
+                    if (data && data.id) appendedDriveId = data.id;
+                    // Si el script antiguo no reconoce upload_chunk y en el bloque 0 ya creó un archivo truncado, paramos
+                    if (idx === 0 && data && !data.chunked && totalChunks > 1) {
+                        return { driveId: data.id || null, mode: 'needs_token_upgrade' };
+                    }
+                } catch (err) {
+                    return { driveId: null, mode: 'needs_token_upgrade' };
+                }
+
+                if (typeof onProgress === 'function') {
+                    onProgress(Math.round(((idx + 1) / totalChunks) * 100), end, file.size);
+                }
+                await new Promise(r => setTimeout(r, 20));
+            }
+
+            return { driveId: appendedDriveId, mode: 'bridge_chunked' };
+        }
 
         const repoTypeFilters = [
             { id: 'all', label: 'Todos en /archivos', icon: 'fa-folder-open' },
@@ -2714,79 +3001,87 @@
 
         async function handleDirectRepoFilesUpload(fileList) {
             if (!fileList || fileList.length === 0) return;
+
+            const filesArray = Array.from(fileList);
             const progressBox = document.getElementById('directUploadProgressBox');
             const progressBar = document.getElementById('directUploadProgressBar');
             const statusText = document.getElementById('directUploadStatusText');
             const percentText = document.getElementById('directUploadPercentText');
 
             progressBox.classList.remove('hidden');
-            progressBar.style.width = '25%';
-            percentText.textContent = '25%';
+            progressBar.style.width = '2%';
+            percentText.textContent = '2%';
 
-            const filesArray = Array.from(fileList);
             const authorName = currentUser ? currentUser.name : 'Grupo';
 
-            for (let i = 0; i < filesArray.length; i++) {
-                const file = filesArray[i];
-                statusText.textContent = `Subiendo ${file.name} a /archivos...`;
-                const pct = Math.round(((i + 0.5) / filesArray.length) * 100);
-                progressBar.style.width = `${pct}%`;
-                percentText.textContent = `${pct}%`;
+            try {
+                for (let i = 0; i < filesArray.length; i++) {
+                    const file = filesArray[i];
+                    statusText.textContent = `Subiendo ${file.name} (${formatBytes(file.size)})...`;
 
-                const base64String = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => resolve((ev.target.result || '').split(',')[1] || null);
-                    reader.readAsDataURL(file);
-                });
+                    const uploadOutcome = await uploadFileSmart(file, file.name, 'archivos', (pct, loadedBytes, totalBytes) => {
+                        progressBar.style.width = `${pct}%`;
+                        percentText.textContent = `${pct}%`;
+                        if (loadedBytes && totalBytes) {
+                            statusText.textContent = `Subiendo ${file.name}: ${formatBytes(loadedBytes)} / ${formatBytes(totalBytes)}`;
+                        }
+                    });
 
-                const createdDriveId = await uploadToPrivateDriveBridge(
-                    file.name,
-                    file.type || 'application/octet-stream',
-                    base64String,
-                    'archivos'
-                );
+                    const createdDriveId = uploadOutcome ? uploadOutcome.driveId : null;
+                    if (uploadOutcome && uploadOutcome.mode === 'needs_token_upgrade') {
+                        const addFileModal = document.getElementById('addFileModal');
+                        const upgradeBox = document.getElementById('bridgeUpgradeNoticeModal');
+                        if (addFileModal) addFileModal.classList.remove('hidden');
+                        if (upgradeBox) upgradeBox.classList.remove('hidden');
+                    }
 
-                const localBlobUrl = URL.createObjectURL(file);
-                const detectedType = detectFileType(file.name, file.type);
+                    const localBlobUrl = URL.createObjectURL(file);
+                    const detectedType = detectFileType(file.name, file.type);
 
-                const metaRecord = {
-                    subfolder: 'archivos',
-                    title: file.name,
-                    description: `Subido a /archivos por ${authorName}.`,
-                    authorName,
-                    createdAt: Date.now()
-                };
-                if (createdDriveId) pinMetadataMap[createdDriveId] = metaRecord;
-                pinMetadataMap[file.name] = metaRecord;
+                    const metaRecord = {
+                        subfolder: 'archivos',
+                        title: file.name,
+                        description: `Subido a /archivos por ${authorName}.`,
+                        authorName,
+                        createdAt: Date.now()
+                    };
+                    if (createdDriveId) pinMetadataMap[createdDriveId] = metaRecord;
+                    pinMetadataMap[file.name] = metaRecord;
 
-                repoFilesData.unshift({
-                    id: 'file-' + (createdDriveId || (Date.now() + '-' + i)),
-                    title: file.name,
-                    folder: 'archivos',
-                    type: detectedType,
-                    size: formatBytes(file.size),
-                    author: authorName,
-                    description: `Subido a /archivos por ${authorName}.`,
-                    url: createdDriveId ? getDriveEmbedPreviewUrl(createdDriveId) : localBlobUrl,
-                    localUrl: localBlobUrl,
-                    driveFolderId: EXCLUSIVE_DRIVE_FOLDER_ID,
-                    driveId: createdDriveId,
-                    date: 'En /archivos'
-                });
-            }
+                    repoFilesData.unshift({
+                        id: 'file-' + (createdDriveId || (Date.now() + '-' + i)),
+                        rawFileName: file.name,
+                        title: file.name,
+                        folder: 'archivos',
+                        type: detectedType,
+                        size: formatBytes(file.size),
+                        author: authorName,
+                        description: `Subido a /archivos por ${authorName}.`,
+                        url: createdDriveId ? getDriveEmbedPreviewUrl(createdDriveId) : localBlobUrl,
+                        localUrl: localBlobUrl,
+                        driveFolderId: EXCLUSIVE_DRIVE_FOLDER_ID,
+                        driveId: createdDriveId,
+                        date: formatDateTime(Date.now())
+                    });
+                }
 
-            progressBar.style.width = '100%';
-            percentText.textContent = '100%';
-            await pushDatabaseToDrive();
+                progressBar.style.width = '100%';
+                percentText.textContent = '100%';
+                await pushDatabaseToDrive();
 
-            setTimeout(() => {
+                setTimeout(() => {
+                    progressBox.classList.add('hidden');
+                    progressBar.style.width = '0%';
+                    renderRepoFolderTabs();
+                    renderRepoFiles();
+                    renderProfileView();
+                    updateCounters();
+                    showToast(`${filesArray.length} archivo(s) subido(s) desde la web`, 'fa-check text-emerald-400');
+                }, 350);
+            } catch (err) {
                 progressBox.classList.add('hidden');
-                progressBar.style.width = '0%';
-                renderRepoFolderTabs();
-                renderRepoFiles();
-                updateCounters();
-                showToast(`${filesArray.length} archivo(s) guardado(s) en /archivos`, 'fa-check text-emerald-400');
-            }, 300);
+                showToast('Error durante la subida del archivo.', 'fa-triangle-exclamation text-rose-400');
+            }
         }
 
         function renderUploadPeopleSelector() {
@@ -3578,20 +3873,34 @@
                 modalRepoFileInput.addEventListener('change', (e) => {
                     const file = e.target.files[0];
                     if (!file) return;
-                    pendingRepoLocalFile = file;
+
                     const label = document.getElementById('modalRepoFileLabel');
                     const titleInput = document.getElementById('fileTitleInput');
                     const typeInput = document.getElementById('fileTypeInput');
 
-                    if (label) label.textContent = `Seleccionado: ${file.name} (${formatBytes(file.size)})`;
                     if (titleInput) titleInput.value = file.name;
                     if (typeInput) typeInput.value = detectFileType(file.name, file.type);
 
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        pendingRepoRawBase64 = (ev.target.result || '').split(',')[1] || null;
-                    };
-                    reader.readAsDataURL(file);
+                    // Guardamos únicamente la referencia al objeto File (0 bytes en RAM) para que nunca explote la página
+                    pendingRepoLocalFile = file;
+                    if (label) {
+                        label.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>Seleccionado: ${file.name} (${formatBytes(file.size)})</span>`;
+                    }
+                });
+            }
+
+            const copyBridgeSnippetBtn = document.getElementById('copyBridgeSnippetBtn');
+            if (copyBridgeSnippetBtn) {
+                copyBridgeSnippetBtn.addEventListener('click', () => {
+                    const codeEl = document.getElementById('bridgeSnippetCode');
+                    if (!codeEl) return;
+                    const textarea = document.createElement('textarea');
+                    textarea.value = codeEl.textContent;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showToast('Código copiado al portapapeles', 'fa-copy text-amber-400');
                 });
             }
 
@@ -3599,76 +3908,111 @@
             if (addFileForm) {
                 addFileForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    if (!pendingRepoLocalFile || !pendingRepoRawBase64) {
-                        showToast('Selecciona un archivo de tu dispositivo', 'fa-circle-exclamation text-rose-400');
+
+                    if (!pendingRepoLocalFile) {
+                        showToast('Selecciona primero un archivo o vídeo de tu dispositivo', 'fa-circle-exclamation text-rose-400');
                         return;
                     }
 
                     const submitBtn = document.getElementById('submitRepoFileBtn');
                     const originalText = submitBtn ? submitBtn.innerHTML : '';
+                    const progBox = document.getElementById('modalRepoUploadProgressBox');
+                    const progBar = document.getElementById('modalRepoUploadProgressBar');
+                    const progStatus = document.getElementById('modalRepoUploadStatusText');
+                    const progPct = document.getElementById('modalRepoUploadPercentText');
+
                     if (submitBtn) {
                         submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Subiendo a /archivos...';
+                        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Subiendo desde la web...';
                     }
 
-                    const titleInput = document.getElementById('fileTitleInput');
-                    const typeInput = document.getElementById('fileTypeInput');
-                    const descInput = document.getElementById('fileDescInput');
+                    try {
+                        const titleInput = document.getElementById('fileTitleInput');
+                        const typeInput = document.getElementById('fileTypeInput');
+                        const descInput = document.getElementById('fileDescInput');
 
-                    const title = titleInput ? titleInput.value.trim() : pendingRepoLocalFile.name;
-                    const fType = typeInput ? typeInput.value : 'doc';
-                    const desc = descInput ? descInput.value.trim() : '';
-                    const authorName = currentUser ? currentUser.name : 'Grupo';
-                    const autoCalculatedSize = formatBytes(pendingRepoLocalFile.size);
+                        const title = titleInput ? titleInput.value.trim() : pendingRepoLocalFile.name;
+                        const fType = typeInput ? typeInput.value : detectFileType(pendingRepoLocalFile.name, pendingRepoLocalFile.type);
+                        const desc = descInput ? descInput.value.trim() : '';
+                        const authorName = currentUser ? currentUser.name : 'Grupo';
+                        const autoCalculatedSize = formatBytes(pendingRepoLocalFile.size);
 
-                    const createdDriveId = await uploadToPrivateDriveBridge(
-                        title,
-                        pendingRepoLocalFile.type || 'application/octet-stream',
-                        pendingRepoRawBase64,
-                        'archivos'
-                    );
+                        if (progBox) progBox.classList.remove('hidden');
+                        if (progStatus) progStatus.textContent = `Iniciando subida de ${title} (${autoCalculatedSize})...`;
 
-                    const metaRecord = {
-                        subfolder: 'archivos',
-                        title,
-                        description: desc,
-                        authorName,
-                        createdAt: Date.now()
-                    };
-                    if (createdDriveId) pinMetadataMap[createdDriveId] = metaRecord;
-                    pinMetadataMap[title] = metaRecord;
+                        const uploadOutcome = await uploadFileSmart(
+                            pendingRepoLocalFile,
+                            title,
+                            'archivos',
+                            (pct, loadedBytes, totalBytes) => {
+                                if (progBar) progBar.style.width = `${pct}%`;
+                                if (progPct) progPct.textContent = `${pct}%`;
+                                if (progStatus && loadedBytes && totalBytes) {
+                                    progStatus.textContent = `Subiendo: ${formatBytes(loadedBytes)} de ${formatBytes(totalBytes)}`;
+                                }
+                            }
+                        );
 
-                    repoFilesData.unshift({
-                        id: 'file-' + (createdDriveId || Date.now()),
-                        title,
-                        folder: 'archivos',
-                        type: fType,
-                        size: autoCalculatedSize,
-                        author: authorName,
-                        description: desc,
-                        url: createdDriveId ? getDriveEmbedPreviewUrl(createdDriveId) : URL.createObjectURL(pendingRepoLocalFile),
-                        driveFolderId: EXCLUSIVE_DRIVE_FOLDER_ID,
-                        driveId: createdDriveId,
-                        date: 'En /archivos'
-                    });
+                        const createdDriveId = uploadOutcome ? uploadOutcome.driveId : null;
+                        const localBlobUrl = URL.createObjectURL(pendingRepoLocalFile);
 
-                    await pushDatabaseToDrive();
+                        const metaRecord = {
+                            subfolder: 'archivos',
+                            title,
+                            fileType: fType,
+                            description: desc,
+                            authorName,
+                            createdAt: Date.now()
+                        };
+                        if (createdDriveId) pinMetadataMap[createdDriveId] = metaRecord;
+                        pinMetadataMap[title] = metaRecord;
 
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
+                        repoFilesData.unshift({
+                            id: 'file-' + (createdDriveId || Date.now()),
+                            rawFileName: title,
+                            title,
+                            folder: 'archivos',
+                            type: fType,
+                            size: autoCalculatedSize,
+                            author: authorName,
+                            description: desc,
+                            url: createdDriveId ? getDriveEmbedPreviewUrl(createdDriveId) : localBlobUrl,
+                            localUrl: localBlobUrl,
+                            driveFolderId: EXCLUSIVE_DRIVE_FOLDER_ID,
+                            driveId: createdDriveId,
+                            date: formatDateTime(Date.now())
+                        });
+
+                        await pushDatabaseToDrive();
+
+                        if (uploadOutcome && uploadOutcome.mode === 'needs_token_upgrade') {
+                            const upgradeBox = document.getElementById('bridgeUpgradeNoticeModal');
+                            if (upgradeBox) upgradeBox.classList.remove('hidden');
+                            showToast('Vídeo listo en la sesión actual. Activa el token de 3 líneas en tu Script para vídeos +50MB permanentes.', 'fa-bolt text-amber-400');
+                        } else {
+                            pendingRepoLocalFile = null;
+                            const label = document.getElementById('modalRepoFileLabel');
+                            if (label) label.textContent = 'Haz clic aquí para elegir el archivo o vídeo de tu dispositivo *';
+                            if (addFileModal) addFileModal.classList.add('hidden');
+                            e.target.reset();
+                            showToast('Vídeo / archivo subido directamente desde la web', 'fa-check text-emerald-400');
+                        }
+
+                        activeRepoTypeFilter = 'all';
+                        renderRepoFolderTabs();
+                        renderRepoFiles();
+                        renderProfileView();
+                        updateCounters();
+                    } catch (err) {
+                        showToast('Error durante la subida del vídeo.', 'fa-triangle-exclamation text-rose-400');
+                    } finally {
+                        if (progBox) progBox.classList.add('hidden');
+                        if (progBar) progBar.style.width = '0%';
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalText;
+                        }
                     }
-                    pendingRepoLocalFile = null;
-                    pendingRepoRawBase64 = null;
-                    const label = document.getElementById('modalRepoFileLabel');
-                    if (label) label.textContent = 'Haz clic aquí para elegir el archivo de tu dispositivo *';
-                    activeRepoTypeFilter = 'all';
-                    renderRepoFolderTabs();
-                    renderRepoFiles();
-                    updateCounters();
-                    if (addFileModal) addFileModal.classList.add('hidden');
-                    e.target.reset();
-                    showToast('Archivo guardado en /archivos', 'fa-check text-emerald-400');
                 });
             }
 
