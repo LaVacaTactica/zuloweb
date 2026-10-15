@@ -356,6 +356,9 @@
                         <button type="button" id="openProfileFromMenuBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-mono uppercase tracking-wider font-medium text-slate-200 hover:bg-amber-500/15 hover:text-amber-300 flex items-center gap-2.5 transition mb-1">
                             <i class="fa-solid fa-id-badge text-amber-400"></i> Mi Perfil y Comunidad
                         </button>
+                        <button type="button" id="openEditProfileFromMenuBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-mono uppercase tracking-wider font-medium text-slate-200 hover:bg-amber-500/15 hover:text-amber-300 flex items-center gap-2.5 transition mb-1">
+                            <i class="fa-solid fa-user-pen text-amber-400"></i> Cambiar nombre / clave
+                        </button>
                         <button type="button" id="switchUserBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-mono uppercase tracking-wider font-medium text-rose-400 hover:bg-rose-500/10 flex items-center gap-2.5 transition">
                             <i class="fa-solid fa-power-off"></i> Cerrar sesión
                         </button>
@@ -570,7 +573,13 @@
                         <span id="profileRoleBadge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-mono uppercase tracking-widest">
                             <i class="fa-solid fa-user-check"></i> Tu Perfil Personal
                         </span>
-                        <h2 id="profileUserName" class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Usuario</h2>
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-1">
+                            <h2 id="profileUserName" class="font-display text-2xl sm:text-3xl font-bold text-white">Usuario</h2>
+                            <button type="button" id="openEditProfileBtn" class="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-slate-950 border border-amber-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition shadow-sm">
+                                <i class="fa-solid fa-user-pen"></i>
+                                <span>Editar nombre / contraseña</span>
+                            </button>
+                        </div>
                         <p id="profileSubtitleText" class="text-xs text-slate-400 mt-1">Gestiona tu foto de perfil y consulta tus publicaciones, likes y comentarios.</p>
                     </div>
                 </div>
@@ -633,7 +642,65 @@
     <!-- ========================================================================= -->
     <!-- MODALES Y DIÁLOGOS                                                        -->
     <!-- ========================================================================= -->
-    <div id="editPinModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+    <div id="editProfileModal" class="hidden fixed inset-0 z-[75] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+        <div class="relative w-full max-w-md bg-[#0d1017] border border-amber-500/30 rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in my-auto text-slate-100">
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+                <div>
+                    <h3 class="font-display text-xl font-bold text-white">Editar Perfil y Contraseña</h3>
+                    <p class="text-xs text-slate-400">Actualiza tu nombre de usuario o cambia tu contraseña.</p>
+                </div>
+                <button type="button" id="closeEditProfileModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="editProfileForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de usuario *</label>
+                    <div class="relative">
+                        <i class="fa-regular fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500/70 text-xs"></i>
+                        <input type="text" id="editProfileNameInput" required placeholder="Tu nombre de usuario..."
+                            class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-800/80">
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nueva contraseña <span class="text-slate-500 font-normal">(déjalo en blanco para mantener la actual)</span></label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500/70 text-xs"></i>
+                        <input type="password" id="editProfileNewPassInput" autocomplete="new-password" placeholder="••••••••"
+                            class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                        <button type="button" id="toggleEditProfilePassBtn" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-400 text-xs">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Confirmar nueva contraseña</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-check-double absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500/70 text-xs"></i>
+                        <input type="password" id="editProfileConfirmPassInput" autocomplete="new-password" placeholder="••••••••"
+                            class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <p id="editProfileErrorMsg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/30 px-3.5 py-2.5 rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation shrink-0"></i>
+                    <span id="editProfileErrorText">Error al actualizar el perfil.</span>
+                </p>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" id="cancelEditProfileBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition">Cancelar</button>
+                    <button type="submit" id="saveEditProfileBtn" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg transition">
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editPinModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
         <div class="relative w-full max-w-lg bg-[#0d1017] border border-amber-500/30 rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in my-auto text-slate-100">
             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
                 <div>
@@ -673,7 +740,7 @@
         </div>
     </div>
 
-    <div id="editFileModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+    <div id="editFileModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
         <div class="relative w-full max-w-lg bg-[#0d1017] border border-amber-500/30 rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in my-auto text-slate-100">
             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
                 <div>
@@ -712,7 +779,7 @@
         </div>
     </div>
 
-    <div id="confirmDeleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+    <div id="confirmDeleteModal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
         <div class="relative w-full max-w-md bg-[#0d1017] border border-rose-500/40 rounded-3xl shadow-2xl p-6 text-center animate-fade-in">
             <div class="w-14 h-14 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center text-2xl mx-auto mb-4">
                 <i class="fa-solid fa-trash-can"></i>
@@ -888,13 +955,6 @@
                 </div>
 
                 <div class="p-4 border-t border-slate-800 bg-[#06080c]">
-                    <div class="flex items-center gap-1.5 mb-2.5 overflow-x-auto no-scrollbar">
-                        <span class="text-[10px] text-slate-400 font-semibold mr-1">Reacción:</span>
-                        <button type="button" data-react="🔥 ¡Brutal!" class="quick-react-btn px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-xs transition">🔥</button>
-                        <button type="button" data-react="😂 ¡Qué momentazo!" class="quick-react-btn px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-xs transition">😂</button>
-                        <button type="button" data-react="🏆 Top" class="quick-react-btn px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-xs transition">🏆</button>
-                        <button type="button" data-react="❤️ Grandes" class="quick-react-btn px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-xs transition">❤️</button>
-                    </div>
                     <form id="commentForm" class="flex items-center gap-2">
                         <input type="text" id="commentInput" required placeholder="Escribe un comentario..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
                         <button type="submit" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm transition shrink-0">Enviar</button>
@@ -904,7 +964,7 @@
         </div>
     </div>
 
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 hidden transform transition-all duration-300 translate-y-2 opacity-0">
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-[90] hidden transform transition-all duration-300 translate-y-2 opacity-0">
         <div class="bg-slate-900 border border-amber-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-medium">
             <i id="toastIcon" class="fa-solid fa-circle-check text-amber-400 text-base"></i>
             <span id="toastMessage">Acción completada</span>
@@ -944,6 +1004,7 @@
         let repoViewMode = 'grid';
         let activeProfileSubTab = 'photos';
         let pendingDeleteTarget = null;
+        const sessionFullImages = {};
 
         const DIRECT_BRIDGE_SAFE_LIMIT = 22 * 1024 * 1024;
 
@@ -1008,7 +1069,7 @@
             return hasImageMime || (file.type === '' && hasImageExt);
         }
 
-        function createCompressedPreviewDataUrl(sourceDataUrl, maxDimension = 420, quality = 0.65) {
+        function createCompressedPreviewDataUrl(sourceDataUrl, maxDimension = 1200, quality = 0.85) {
             return new Promise((resolve) => {
                 if (!sourceDataUrl) {
                     resolve(null);
@@ -1017,8 +1078,8 @@
                 const img = new Image();
                 img.onload = () => {
                     try {
-                        let w = img.naturalWidth || 800;
-                        let h = img.naturalHeight || 600;
+                        let w = img.naturalWidth || 1200;
+                        let h = img.naturalHeight || 900;
                         if (w > maxDimension || h > maxDimension) {
                             if (w > h) {
                                 h = Math.round((h * maxDimension) / w);
@@ -1107,7 +1168,20 @@
             return combined;
         }
 
-        async function pushDatabaseToDrive(changedPinKeys = []) {
+        function safePlayVideo(videoEl) {
+            if (!videoEl || typeof videoEl.play !== 'function') return;
+            try {
+                const p = videoEl.play();
+                if (p && typeof p.catch === 'function') p.catch(() => {});
+            } catch (e) {}
+        }
+
+        function safePauseVideo(videoEl) {
+            if (!videoEl || typeof videoEl.pause !== 'function') return;
+            try { videoEl.pause(); } catch (e) {}
+        }
+
+        async function pushDatabaseToDrive(changedPinKeys = [], options = {}) {
             saveLocalCache();
             if (!PRIVATE_BRIDGE_URL) return;
 
@@ -1119,12 +1193,19 @@
                     });
                     const checkData = await checkRes.json();
                     if (checkData && checkData.db) {
+                        const renamedFromLower = options.renamedFrom ? options.renamedFrom.toLowerCase() : null;
                         if (Array.isArray(checkData.db.users)) {
                             checkData.db.users.forEach(remoteU => {
-                                const idx = GROUP_MEMBERS.findIndex(m => m.name.toLowerCase() === remoteU.name.toLowerCase());
+                                if (!remoteU || !remoteU.name) return;
+                                if (renamedFromLower && remoteU.name.toLowerCase() === renamedFromLower) return;
+
+                                const idx = GROUP_MEMBERS.findIndex(m =>
+                                    (m.id && remoteU.id && m.id === remoteU.id) ||
+                                    m.name.toLowerCase() === remoteU.name.toLowerCase()
+                                );
                                 if (idx === -1) {
                                     GROUP_MEMBERS.push(remoteU);
-                                } else if (!currentUser || remoteU.name.toLowerCase() !== currentUser.name.toLowerCase()) {
+                                } else if (!currentUser || (GROUP_MEMBERS[idx].name.toLowerCase() !== currentUser.name.toLowerCase() && GROUP_MEMBERS[idx].id !== currentUser.id)) {
                                     GROUP_MEMBERS[idx] = { ...GROUP_MEMBERS[idx], ...remoteU };
                                 }
                             });
@@ -1200,7 +1281,7 @@
         }
 
         function getDriveDirectImageUrl(driveId) {
-            return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1600`;
+            return `https://drive.google.com/thumbnail?id=${driveId}&sz=w2400`;
         }
 
         function getDriveEmbedPreviewUrl(driveId) {
@@ -1217,7 +1298,7 @@
 
             if (driveId && step === 0) {
                 imgEl.dataset.fallbackStep = '1';
-                imgEl.src = `https://lh3.googleusercontent.com/d/${driveId}=w1600`;
+                imgEl.src = `https://lh3.googleusercontent.com/d/${driveId}=w2400`;
                 return;
             }
             if (driveId && step === 1) {
@@ -1238,14 +1319,16 @@
                     const b64 = data.base64 || data.dataUrl;
                     if (b64) {
                         const fullDataUrl = b64.startsWith('data:') ? b64 : `data:${data.mimeType || 'image/jpeg'};base64,${b64}`;
+                        sessionFullImages[driveId] = fullDataUrl;
                         imgEl.src = fullDataUrl;
-                        if (pinMetadataMap[driveId]) {
-                            pinMetadataMap[driveId].previewDataUrl = await createCompressedPreviewDataUrl(fullDataUrl, 420, 0.65);
-                            pushDatabaseToDrive([driveId]);
-                        }
                         return;
                     }
                 } catch (err) {}
+
+                if (driveId && pinMetadataMap[driveId]?.previewDataUrl) {
+                    imgEl.src = pinMetadataMap[driveId].previewDataUrl;
+                    return;
+                }
 
                 const banner = document.getElementById('drivePermissionBanner');
                 if (banner) banner.classList.remove('hidden');
@@ -1500,7 +1583,11 @@
                 if (data.db) {
                     if (Array.isArray(data.db.users) && data.db.users.length > 0) {
                         data.db.users.forEach(remoteUser => {
-                            const existingIdx = GROUP_MEMBERS.findIndex(m => m.name.toLowerCase() === remoteUser.name.toLowerCase());
+                            if (!remoteUser || !remoteUser.name) return;
+                            const existingIdx = GROUP_MEMBERS.findIndex(m =>
+                                (m.id && remoteUser.id && m.id === remoteUser.id) ||
+                                m.name.toLowerCase() === remoteUser.name.toLowerCase()
+                            );
                             if (existingIdx === -1) {
                                 GROUP_MEMBERS.push(remoteUser);
                             } else {
@@ -1511,9 +1598,14 @@
                             }
                         });
                         if (currentUser) {
-                            const myUpdated = GROUP_MEMBERS.find(m => m.name.toLowerCase() === currentUser.name.toLowerCase());
-                            if (myUpdated && myUpdated.avatar) {
-                                currentUser.avatar = myUpdated.avatar;
+                            const myUpdated = GROUP_MEMBERS.find(m =>
+                                (m.id && currentUser.id && m.id === currentUser.id) ||
+                                m.name.toLowerCase() === currentUser.name.toLowerCase()
+                            );
+                            if (myUpdated) {
+                                currentUser.name = myUpdated.name;
+                                if (myUpdated.password) currentUser.password = myUpdated.password;
+                                if (myUpdated.avatar) currentUser.avatar = myUpdated.avatar;
                                 updateHeaderProfile();
                             }
                         }
@@ -1591,7 +1683,8 @@
                         }
                         const pinCreatedAt = Number(meta.createdAt) || Number(df.updated) || Date.now();
                         const scriptDataUrl = df.dataUrl || (df.base64 ? `data:${df.mimeType || 'image/jpeg'};base64,${df.base64}` : null);
-                        const bestPreviewUrl = existingLocalPreviews[df.id] || meta.previewDataUrl || scriptDataUrl || null;
+                        if (scriptDataUrl) sessionFullImages[df.id] = scriptDataUrl;
+                        const bestPreviewUrl = existingLocalPreviews[df.id] || meta.previewDataUrl || null;
 
                         const syncedComments = (Array.isArray(meta.comments) ? meta.comments : []).map(c => {
                             const cMember = GROUP_MEMBERS.find(m => m.name.toLowerCase() === (c.author || '').toLowerCase());
@@ -1611,10 +1704,11 @@
                             mediaType: 'image',
                             ratioLabel: meta.ratioLabel || formatBytes(Number(df.size)),
                             mediaUrl: getDriveDirectImageUrl(df.id),
+                            fullLocalUrl: sessionFullImages[df.id] || null,
                             localPreviewUrl: bestPreviewUrl,
                             folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
                             author: { name: authorName, avatar: authorAvatar },
-                            peopleInPhoto: Array.isArray(meta.peopleInPhoto) && meta.peopleInPhoto.length > 0 ? meta.peopleInPhoto : [authorName],
+                            peopleInPhoto: Array.isArray(meta.peopleInPhoto) ? meta.peopleInPhoto : [],
                             timestamp: formatDateTime(pinCreatedAt),
                             createdAt: pinCreatedAt,
                             likes: Array.isArray(meta.likes) ? meta.likes : [],
@@ -1846,7 +1940,7 @@
         function createPinCardHTML(pin) {
             const myName = currentUser ? currentUser.name : '';
             const isLiked = pin.likes.some(u => u.toLowerCase() === myName.toLowerCase());
-            const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
+            const imgSrc = pin.fullLocalUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : (pin.mediaUrl || pin.localPreviewUrl));
             const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const authorName = pin.author?.name || 'Grupo';
             const authorAvatar = getAvatarForUserName(authorName);
@@ -1967,7 +2061,7 @@
             const cleanName = (pin.title || 'foto_zuloweb').replace(/[^a-zA-Z0-9_-]/g, '_');
             triggerDeviceDownload({
                 driveId: pin.driveId,
-                localUrl: pin.localPreviewUrl,
+                localUrl: pin.fullLocalUrl,
                 fallbackUrl: pin.mediaUrl,
                 filename: `${cleanName}.jpg`,
                 isImage: true
@@ -2012,7 +2106,7 @@
             currentOpenPinId = pinId;
 
             const mediaContainer = document.getElementById('modalMediaContainer');
-            const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
+            const imgSrc = pin.fullLocalUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : (pin.mediaUrl || pin.localPreviewUrl));
             const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
             mediaContainer.innerHTML = `
@@ -2060,38 +2154,46 @@
             document.getElementById('modalPinDescription').textContent = pin.description;
 
             const peopleContainer = document.getElementById('modalPeopleTags');
-            const peopleList = pin.peopleInPhoto && pin.peopleInPhoto.length > 0 ? pin.peopleInPhoto : [authorName];
-            peopleContainer.innerHTML = peopleList.map(person => `
-                <div class="inline-flex items-center rounded-lg overflow-hidden border border-amber-500/30 bg-amber-500/10">
-                    <button type="button" data-open-person-profile="${person}" title="Ver perfil de @${person}"
-                        class="modal-person-profile-btn px-2.5 py-1 text-xs font-semibold text-amber-400 hover:bg-amber-500 hover:text-slate-950 transition flex items-center gap-1">
-                        <i class="fa-regular fa-user text-[10px]"></i>
-                        <span>@${person}</span>
-                    </button>
-                    <button type="button" data-filter-person="${person}" title="Filtrar fotos donde sale @${person}"
-                        class="modal-person-filter-btn px-2 py-1 text-[10px] text-slate-300 hover:bg-slate-800 hover:text-amber-300 border-l border-amber-500/20 transition">
-                        <i class="fa-solid fa-filter"></i>
-                    </button>
-                </div>
-            `).join('');
+            const peopleWrapper = peopleContainer ? peopleContainer.parentElement : null;
+            const peopleList = Array.isArray(pin.peopleInPhoto) ? pin.peopleInPhoto.filter(Boolean) : [];
 
-            peopleContainer.querySelectorAll('.modal-person-profile-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const person = btn.dataset.openPersonProfile;
-                    closePinDetailModal();
-                    openUserProfile(person);
-                });
-            });
+            if (peopleList.length === 0) {
+                if (peopleWrapper) peopleWrapper.classList.add('hidden');
+                if (peopleContainer) peopleContainer.innerHTML = '';
+            } else {
+                if (peopleWrapper) peopleWrapper.classList.remove('hidden');
+                peopleContainer.innerHTML = peopleList.map(person => `
+                    <div class="inline-flex items-center rounded-lg overflow-hidden border border-amber-500/30 bg-amber-500/10">
+                        <button type="button" data-open-person-profile="${person}" title="Ver perfil de @${person}"
+                            class="modal-person-profile-btn px-2.5 py-1 text-xs font-semibold text-amber-400 hover:bg-amber-500 hover:text-slate-950 transition flex items-center gap-1">
+                            <i class="fa-regular fa-user text-[10px]"></i>
+                            <span>@${person}</span>
+                        </button>
+                        <button type="button" data-filter-person="${person}" title="Filtrar fotos donde sale @${person}"
+                            class="modal-person-filter-btn px-2 py-1 text-[10px] text-slate-300 hover:bg-slate-800 hover:text-amber-300 border-l border-amber-500/20 transition">
+                            <i class="fa-solid fa-filter"></i>
+                        </button>
+                    </div>
+                `).join('');
 
-            peopleContainer.querySelectorAll('.modal-person-filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    activePersonFilter = btn.dataset.filterPerson;
-                    closePinDetailModal();
-                    renderPersonFilterChips();
-                    renderMasonryWall();
-                    showToast(`Filtrando fotos donde aparece @${activePersonFilter}`, 'fa-user-tag text-amber-400');
+                peopleContainer.querySelectorAll('.modal-person-profile-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const person = btn.dataset.openPersonProfile;
+                        closePinDetailModal();
+                        openUserProfile(person);
+                    });
                 });
-            });
+
+                peopleContainer.querySelectorAll('.modal-person-filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        activePersonFilter = btn.dataset.filterPerson;
+                        closePinDetailModal();
+                        renderPersonFilterChips();
+                        renderMasonryWall();
+                        showToast(`Filtrando fotos donde aparece @${activePersonFilter}`, 'fa-user-tag text-amber-400');
+                    });
+                });
+            }
 
             updateModalLikesUI(pin);
             renderModalComments(pin);
@@ -2675,11 +2777,13 @@
             const profileRoleBadge = document.getElementById('profileRoleBadge');
             const profileSubtitleText = document.getElementById('profileSubtitleText');
             const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            const openEditProfileBtn = document.getElementById('openEditProfileBtn');
             const backToMyOwnBtn = document.getElementById('backToMyOwnProfileBtn');
 
             if (profileBigAvatar) profileBigAvatar.src = getAvatarForUserName(targetName);
             if (profileUserName) profileUserName.textContent = `@${targetName}`;
             if (changeAvatarBtn) changeAvatarBtn.classList.toggle('hidden', !isOwnProfile);
+            if (openEditProfileBtn) openEditProfileBtn.classList.toggle('hidden', !isOwnProfile);
             if (backToMyOwnBtn) backToMyOwnBtn.classList.toggle('hidden', isOwnProfile);
 
             if (profileRoleBadge) {
@@ -2736,7 +2840,7 @@
                 } else {
                     photosGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
                     photosGrid.innerHTML = userPins.map(pin => {
-                        const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
+                        const imgSrc = pin.fullLocalUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : (pin.mediaUrl || pin.localPreviewUrl));
                         const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                         return `
                             <div class="bg-[#0d1017] border border-slate-800 hover:border-amber-500/40 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg transition">
@@ -2823,7 +2927,7 @@
                 } else {
                     likesGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
                     likesGrid.innerHTML = userLikedPins.map(pin => {
-                        const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
+                        const imgSrc = pin.fullLocalUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : (pin.mediaUrl || pin.localPreviewUrl));
                         const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                         return `
                             <div class="bg-[#0d1017] border border-slate-800 hover:border-rose-500/40 rounded-2xl overflow-hidden shadow-lg cursor-pointer profile-liked-pin transition" data-pin-id="${pin.id}">
@@ -2857,7 +2961,7 @@
                 } else {
                     commentsListEl.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
                     commentsListEl.innerHTML = userComments.map(({ pin, comment }) => {
-                        const imgSrc = pin.localPreviewUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : pin.mediaUrl);
+                        const imgSrc = pin.fullLocalUrl || (pin.driveId ? getDriveDirectImageUrl(pin.driveId) : (pin.mediaUrl || pin.localPreviewUrl));
                         const escapedTitle = (pin.title || 'Foto').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                         const timeLabel = comment.createdAt ? formatDateTime(comment.createdAt) : (comment.time || '');
                         return `
@@ -3001,13 +3105,18 @@
                     });
                 }
                 await pushDatabaseToDrive(changedKeys);
+                await syncFromPrivateDriveFolder(true);
                 progressBox.classList.add('hidden');
+                const directInput = document.getElementById('directRepoFileInput');
+                if (directInput) directInput.value = '';
                 renderRepoFiles();
                 renderProfileView();
                 updateCounters();
-                showToast('Archivo(s) subido(s) a /archivos', 'fa-check text-emerald-400');
+                showToast('Archivo(s) subido(s) y sincronizado(s) en /archivos', 'fa-check text-emerald-400');
             } catch (err) {
                 progressBox.classList.add('hidden');
+                const directInput = document.getElementById('directRepoFileInput');
+                if (directInput) directInput.value = '';
                 showToast('Error en la subida', 'fa-triangle-exclamation text-rose-400');
             }
         }
@@ -3193,6 +3302,203 @@
                 switchMainTab('profile');
             });
 
+            function openEditProfileModal() {
+                if (!currentUser) return;
+                document.getElementById('userDropdown').classList.add('hidden');
+                document.getElementById('editProfileNameInput').value = currentUser.name || '';
+                document.getElementById('editProfileNewPassInput').value = '';
+                document.getElementById('editProfileConfirmPassInput').value = '';
+                document.getElementById('editProfileErrorMsg').classList.add('hidden');
+                document.getElementById('editProfileModal').classList.remove('hidden');
+            }
+
+            const openEditProfileBtn = document.getElementById('openEditProfileBtn');
+            if (openEditProfileBtn) openEditProfileBtn.addEventListener('click', openEditProfileModal);
+
+            const openEditProfileFromMenuBtn = document.getElementById('openEditProfileFromMenuBtn');
+            if (openEditProfileFromMenuBtn) openEditProfileFromMenuBtn.addEventListener('click', openEditProfileModal);
+
+            document.getElementById('closeEditProfileModalBtn').addEventListener('click', () => {
+                document.getElementById('editProfileModal').classList.add('hidden');
+            });
+            document.getElementById('cancelEditProfileBtn').addEventListener('click', () => {
+                document.getElementById('editProfileModal').classList.add('hidden');
+            });
+
+            const toggleEditProfilePassBtn = document.getElementById('toggleEditProfilePassBtn');
+            if (toggleEditProfilePassBtn) {
+                toggleEditProfilePassBtn.addEventListener('click', () => {
+                    const newPassInp = document.getElementById('editProfileNewPassInput');
+                    const confPassInp = document.getElementById('editProfileConfirmPassInput');
+                    const nextType = newPassInp.type === 'password' ? 'text' : 'password';
+                    newPassInp.type = nextType;
+                    confPassInp.type = nextType;
+                });
+            }
+
+            document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!currentUser) return;
+
+                const newName = document.getElementById('editProfileNameInput').value.trim();
+                const newPass = document.getElementById('editProfileNewPassInput').value;
+                const confirmPass = document.getElementById('editProfileConfirmPassInput').value;
+                const errBox = document.getElementById('editProfileErrorMsg');
+                const errTxt = document.getElementById('editProfileErrorText');
+
+                errBox.classList.add('hidden');
+
+                if (!newName) {
+                    errTxt.textContent = 'El nombre de usuario no puede estar vacío.';
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+
+                const oldName = currentUser.name;
+                const oldNameLower = oldName.toLowerCase();
+                const newNameLower = newName.toLowerCase();
+
+                const nameConflict = GROUP_MEMBERS.some(m =>
+                    m.name.toLowerCase() === newNameLower &&
+                    m.name.toLowerCase() !== oldNameLower &&
+                    (!currentUser.id || m.id !== currentUser.id)
+                );
+
+                if (nameConflict) {
+                    errTxt.textContent = 'Ese nombre de usuario ya está en uso por otro miembro.';
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+
+                if (newPass) {
+                    if (newPass.length < 3) {
+                        errTxt.textContent = 'La nueva contraseña es demasiado corta.';
+                        errBox.classList.remove('hidden');
+                        return;
+                    }
+                    if (newPass !== confirmPass) {
+                        errTxt.textContent = 'Las contraseñas nuevas no coinciden.';
+                        errBox.classList.remove('hidden');
+                        return;
+                    }
+                }
+
+                const saveBtn = document.getElementById('saveEditProfileBtn');
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Guardando...';
+
+                try {
+                    if (!currentUser.id) currentUser.id = 'user-' + Date.now();
+                    currentUser.name = newName;
+                    if (newPass) currentUser.password = newPass;
+
+                    // Si el avatar era el placeholder con iniciales antiguas, actualizar iniciales
+                    if (currentUser.avatar && currentUser.avatar.includes('placehold.co/') && oldNameLower !== newNameLower) {
+                        currentUser.avatar = `https://placehold.co/100x100/111622/c5a059?text=${encodeURIComponent(newName.slice(0, 2).toUpperCase())}`;
+                    }
+
+                    let memberFound = false;
+                    GROUP_MEMBERS.forEach(m => {
+                        if ((m.id && m.id === currentUser.id) || m.name.toLowerCase() === oldNameLower) {
+                            m.id = currentUser.id;
+                            m.name = currentUser.name;
+                            if (newPass) m.password = newPass;
+                            m.avatar = currentUser.avatar;
+                            memberFound = true;
+                        }
+                    });
+                    if (!memberFound) {
+                        GROUP_MEMBERS.push({ ...currentUser });
+                    }
+
+                    const touchedMetaKeys = [];
+
+                    if (oldNameLower !== newNameLower) {
+                        if (inspectedProfileUser && inspectedProfileUser.toLowerCase() === oldNameLower) {
+                            inspectedProfileUser = newName;
+                        }
+                        if (activePersonFilter && activePersonFilter.toLowerCase() === oldNameLower) {
+                            activePersonFilter = newName;
+                        }
+
+                        pinsData.forEach(pin => {
+                            if ((pin.author?.name || '').toLowerCase() === oldNameLower) {
+                                pin.author.name = newName;
+                                pin.author.avatar = currentUser.avatar;
+                            }
+                            if (Array.isArray(pin.peopleInPhoto)) {
+                                pin.peopleInPhoto = pin.peopleInPhoto.map(p => p.toLowerCase() === oldNameLower ? newName : p);
+                            }
+                            if (Array.isArray(pin.likes)) {
+                                pin.likes = pin.likes.map(u => u.toLowerCase() === oldNameLower ? newName : u);
+                            }
+                            if (Array.isArray(pin.comments)) {
+                                pin.comments.forEach(c => {
+                                    if ((c.author || '').toLowerCase() === oldNameLower) {
+                                        c.author = newName;
+                                        c.avatar = currentUser.avatar;
+                                    }
+                                });
+                            }
+                        });
+
+                        repoFilesData.forEach(file => {
+                            if ((file.author || '').toLowerCase() === oldNameLower) {
+                                file.author = newName;
+                            }
+                        });
+
+                        Object.keys(pinMetadataMap).forEach(k => {
+                            const meta = pinMetadataMap[k];
+                            if (!meta) return;
+                            let modified = false;
+
+                            if ((meta.authorName || '').toLowerCase() === oldNameLower) {
+                                meta.authorName = newName;
+                                meta.authorAvatar = currentUser.avatar;
+                                modified = true;
+                            }
+                            if (Array.isArray(meta.peopleInPhoto) && meta.peopleInPhoto.some(p => p.toLowerCase() === oldNameLower)) {
+                                meta.peopleInPhoto = meta.peopleInPhoto.map(p => p.toLowerCase() === oldNameLower ? newName : p);
+                                modified = true;
+                            }
+                            if (Array.isArray(meta.likes) && meta.likes.some(u => u.toLowerCase() === oldNameLower)) {
+                                meta.likes = meta.likes.map(u => u.toLowerCase() === oldNameLower ? newName : u);
+                                modified = true;
+                            }
+                            if (Array.isArray(meta.comments)) {
+                                meta.comments.forEach(c => {
+                                    if ((c.author || '').toLowerCase() === oldNameLower) {
+                                        c.author = newName;
+                                        c.avatar = currentUser.avatar;
+                                        modified = true;
+                                    }
+                                });
+                            }
+
+                            if (modified) {
+                                meta.updatedAt = Date.now();
+                                touchedMetaKeys.push(k);
+                            }
+                        });
+                    }
+
+                    updateHeaderProfile();
+                    renderPersonFilterChips();
+                    renderUploadPeopleSelector();
+                    renderMasonryWall();
+                    renderRepoFiles();
+                    renderProfileView();
+
+                    document.getElementById('editProfileModal').classList.add('hidden');
+                    await pushDatabaseToDrive(touchedMetaKeys, { renamedFrom: oldNameLower !== newNameLower ? oldName : null });
+                    showToast('Perfil actualizado correctamente', 'fa-user-check text-emerald-400');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Guardar cambios';
+                }
+            });
+
             document.getElementById('backToMyOwnProfileBtn').addEventListener('click', () => {
                 if (currentUser) {
                     inspectedProfileUser = currentUser.name;
@@ -3245,19 +3551,69 @@
                 });
             }
 
+            let pendingModalRepoFile = null;
+
+            function resetUploadPinModal() {
+                const form = document.getElementById('uploadPinForm');
+                if (form) form.reset();
+                const fileInp = document.getElementById('localFileInput');
+                if (fileInp) fileInp.value = '';
+                uploadedDataUrl = null;
+                const placeholder = document.getElementById('uploadPreviewPlaceholder');
+                const previewContainer = document.getElementById('uploadPreviewContainer');
+                const previewImg = document.getElementById('uploadImagePreview');
+                const fileNameTxt = document.getElementById('uploadFileNameText');
+                const errMsg = document.getElementById('uploadPinErrorMsg');
+                const catDropdown = document.getElementById('categoryDropdownList');
+                if (placeholder) placeholder.classList.remove('hidden');
+                if (previewContainer) previewContainer.classList.add('hidden');
+                if (previewImg) previewImg.src = '';
+                if (fileNameTxt) fileNameTxt.textContent = '';
+                if (errMsg) errMsg.classList.add('hidden');
+                if (catDropdown) catDropdown.classList.add('hidden');
+                const submitBtn = document.getElementById('submitWallPinBtn');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Subir Foto a /fotos';
+                }
+            }
+
+            function resetAddFileModal() {
+                const form = document.getElementById('addFileForm');
+                if (form) form.reset();
+                const fileInp = document.getElementById('modalRepoFileInput');
+                if (fileInp) fileInp.value = '';
+                pendingModalRepoFile = null;
+                const label = document.getElementById('modalRepoFileLabel');
+                if (label) label.textContent = 'Haz clic aquí para elegir el archivo *';
+                const submitBtn = document.querySelector('#addFileForm button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Subir a /archivos';
+                }
+            }
+
             document.getElementById('openUploadModalBtn').addEventListener('click', () => {
+                resetUploadPinModal();
                 renderUploadPeopleSelector();
                 document.getElementById('uploadPinModal').classList.remove('hidden');
             });
             const emptyUploadBtn = document.getElementById('emptyUploadFirstPinBtn');
             if (emptyUploadBtn) {
                 emptyUploadBtn.addEventListener('click', () => {
+                    resetUploadPinModal();
                     renderUploadPeopleSelector();
                     document.getElementById('uploadPinModal').classList.remove('hidden');
                 });
             }
-            document.getElementById('closeUploadModalBtn').addEventListener('click', () => document.getElementById('uploadPinModal').classList.add('hidden'));
-            document.getElementById('cancelUploadBtn').addEventListener('click', () => document.getElementById('uploadPinModal').classList.add('hidden'));
+            document.getElementById('closeUploadModalBtn').addEventListener('click', () => {
+                resetUploadPinModal();
+                document.getElementById('uploadPinModal').classList.add('hidden');
+            });
+            document.getElementById('cancelUploadBtn').addEventListener('click', () => {
+                resetUploadPinModal();
+                document.getElementById('uploadPinModal').classList.add('hidden');
+            });
 
             const pinCategoryInput = document.getElementById('pinCategoryInput');
             const comboboxWrapper = document.getElementById('categoryComboboxWrapper');
@@ -3278,14 +3634,21 @@
             }
 
             document.getElementById('openAddFileModalBtn').addEventListener('click', () => {
+                resetAddFileModal();
                 document.getElementById('addFileModal').classList.remove('hidden');
             });
-            document.getElementById('closeAddFileModalBtn').addEventListener('click', () => document.getElementById('addFileModal').classList.add('hidden'));
+            document.getElementById('closeAddFileModalBtn').addEventListener('click', () => {
+                resetAddFileModal();
+                document.getElementById('addFileModal').classList.add('hidden');
+            });
 
             const directDropzone = document.getElementById('directRepoDropzone');
             const directFileInput = document.getElementById('directRepoFileInput');
             if (directDropzone && directFileInput) {
-                directDropzone.addEventListener('click', () => directFileInput.click());
+                directDropzone.addEventListener('click', () => {
+                    directFileInput.value = '';
+                    directFileInput.click();
+                });
                 directFileInput.addEventListener('change', (e) => handleDirectRepoFilesUpload(e.target.files));
                 directDropzone.addEventListener('dragover', (e) => {
                     e.preventDefault();
@@ -3311,7 +3674,10 @@
 
             const localArea = document.getElementById('localFileUploadArea');
             const localInput = document.getElementById('localFileInput');
-            localArea.addEventListener('click', () => localInput.click());
+            localArea.addEventListener('click', () => {
+                localInput.value = '';
+                localInput.click();
+            });
             localInput.addEventListener('change', (e) => {
                 const f = e.target.files && e.target.files[0];
                 if (f && isValidPhotoFile(f)) {
@@ -3325,6 +3691,7 @@
                     };
                     reader.readAsDataURL(f);
                 } else if (f) {
+                    localInput.value = '';
                     showToast('Solo se permiten archivos de imagen en /fotos', 'fa-circle-exclamation text-rose-400');
                 }
             });
@@ -3335,73 +3702,102 @@
                     showToast('Selecciona una imagen válida', 'fa-circle-exclamation text-rose-400');
                     return;
                 }
-                const title = document.getElementById('pinTitleInput').value.trim();
-                const category = document.getElementById('pinCategoryInput').value.trim();
-                const desc = document.getElementById('pinDescInput').value.trim();
-                const rawPeople = document.getElementById('pinPeopleInput').value.trim();
-                const people = rawPeople ? rawPeople.split(',').map(s => s.trim()).filter(Boolean) : [currentUser.name];
-
-                if (category && !customCategories.some(c => c.toLowerCase() === category.toLowerCase())) {
-                    customCategories.push(category);
+                const submitBtn = document.getElementById('submitWallPinBtn');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Subiendo y sincronizando...';
                 }
 
-                const resBlob = await (await fetch(uploadedDataUrl)).blob();
-                const compressedPreview = await createCompressedPreviewDataUrl(uploadedDataUrl, 420, 0.65);
-                const base64 = await blobSliceToBase64(resBlob);
-                const filename = `photo_${Date.now()}.jpg`;
+                try {
+                    const originalDataUrl = uploadedDataUrl;
+                    const title = document.getElementById('pinTitleInput').value.trim();
+                    const category = document.getElementById('pinCategoryInput').value.trim();
+                    const desc = document.getElementById('pinDescInput').value.trim();
+                    const rawPeople = document.getElementById('pinPeopleInput').value.trim();
+                    const people = rawPeople ? rawPeople.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-                showToast('Subiendo foto a /fotos...', 'fa-cloud-arrow-up fa-spin text-amber-400');
-                const driveId = await uploadToPrivateDriveBridge(filename, 'image/jpeg', base64, 'fotos');
+                    if (category && !customCategories.some(c => c.toLowerCase() === category.toLowerCase())) {
+                        customCategories.push(category);
+                    }
 
-                const now = Date.now();
-                const newPin = {
-                    id: 'pin-' + (driveId || now),
-                    driveId: driveId || null,
-                    rawFileName: filename,
-                    title,
-                    description: desc,
-                    category,
-                    mediaType: 'image',
-                    ratioLabel: 'Original',
-                    mediaUrl: driveId ? getDriveDirectImageUrl(driveId) : uploadedDataUrl,
-                    localPreviewUrl: compressedPreview || uploadedDataUrl,
-                    folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
-                    author: { name: currentUser.name, avatar: currentUser.avatar },
-                    peopleInPhoto: people,
-                    timestamp: formatDateTime(now),
-                    createdAt: now,
-                    likes: [],
-                    comments: [],
-                    deletedCommentIds: []
-                };
+                    const resBlob = await (await fetch(originalDataUrl)).blob();
+                    const mimeType = resBlob.type || 'image/jpeg';
+                    const ext = mimeType.split('/')[1] ? mimeType.split('/')[1].replace('jpeg', 'jpg') : 'jpg';
+                    const compressedPreview = await createCompressedPreviewDataUrl(originalDataUrl, 1200, 0.85);
+                    const base64 = await blobSliceToBase64(resBlob);
+                    const filename = `photo_${Date.now()}.${ext}`;
 
-                if (driveId) {
-                    pinMetadataMap[driveId] = { previewDataUrl: compressedPreview };
+                    showToast('Subiendo foto en alta calidad a /fotos...', 'fa-cloud-arrow-up fa-spin text-amber-400');
+                    const driveId = await uploadToPrivateDriveBridge(filename, mimeType, base64, 'fotos');
+
+                    if (driveId) {
+                        sessionFullImages[driveId] = originalDataUrl;
+                    }
+
+                    const now = Date.now();
+                    const newPin = {
+                        id: 'pin-' + (driveId || now),
+                        driveId: driveId || null,
+                        rawFileName: filename,
+                        title,
+                        description: desc,
+                        category,
+                        mediaType: 'image',
+                        ratioLabel: 'Original',
+                        mediaUrl: driveId ? getDriveDirectImageUrl(driveId) : originalDataUrl,
+                        fullLocalUrl: originalDataUrl,
+                        localPreviewUrl: compressedPreview || originalDataUrl,
+                        folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
+                        author: { name: currentUser.name, avatar: currentUser.avatar },
+                        peopleInPhoto: people,
+                        timestamp: formatDateTime(now),
+                        createdAt: now,
+                        likes: [],
+                        comments: [],
+                        deletedCommentIds: []
+                    };
+
+                    if (driveId) {
+                        pinMetadataMap[driveId] = { previewDataUrl: compressedPreview };
+                    }
+
+                    // Quitamos filtros activos para que la foto recién subida sea visible de inmediato
+                    activeCategory = 'all';
+                    activePersonFilter = '';
+                    searchQuery = '';
+                    const searchInp = document.getElementById('searchInput');
+                    if (searchInp) searchInp.value = '';
+
+                    pinsData.unshift(newPin);
+                    renderCategoryPills();
+                    renderPersonFilterChips();
+                    renderMasonryWall();
+                    renderProfileView();
+                    updateCounters();
+
+                    document.getElementById('uploadPinModal').classList.add('hidden');
+                    resetUploadPinModal();
+
+                    await savePinMeta(newPin);
+                    await syncFromPrivateDriveFolder(true);
+                    showToast('Foto subida y sincronizada en /fotos', 'fa-check text-emerald-400');
+                } catch (err) {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Subir Foto a /fotos';
+                    }
+                    showToast('Error al subir la foto', 'fa-triangle-exclamation text-rose-400');
                 }
-
-                pinsData.unshift(newPin);
-                await savePinMeta(newPin);
-
-                document.getElementById('uploadPinModal').classList.add('hidden');
-                document.getElementById('uploadPinForm').reset();
-                document.getElementById('uploadPreviewPlaceholder').classList.remove('hidden');
-                document.getElementById('uploadPreviewContainer').classList.add('hidden');
-                uploadedDataUrl = null;
-
-                renderCategoryPills();
-                renderPersonFilterChips();
-                renderMasonryWall();
-                renderProfileView();
-                updateCounters();
-                showToast('Foto publicada en /fotos', 'fa-check text-emerald-400');
             });
 
             // Repositorio subida modal
             const modalRepoArea = document.getElementById('modalRepoFileDrop');
             const modalRepoInput = document.getElementById('modalRepoFileInput');
-            let pendingModalRepoFile = null;
 
-            modalRepoArea.addEventListener('click', () => modalRepoInput.click());
+            modalRepoArea.addEventListener('click', () => {
+                modalRepoInput.value = '';
+                modalRepoInput.click();
+            });
             modalRepoInput.addEventListener('change', (e) => {
                 const f = e.target.files && e.target.files[0];
                 if (f) {
@@ -3418,56 +3814,75 @@
                     return;
                 }
 
-                const title = document.getElementById('fileTitleInput').value.trim();
-                const fType = document.getElementById('fileTypeInput').value;
-                const desc = document.getElementById('fileDescInput').value.trim();
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Subiendo y sincronizando...';
+                }
 
-                showToast('Subiendo archivo a /archivos...', 'fa-cloud-arrow-up fa-spin text-amber-400');
-                const outcome = await uploadFileSmart(pendingModalRepoFile, title, 'archivos');
-                const driveId = outcome ? outcome.driveId : null;
-                const localUrl = URL.createObjectURL(pendingModalRepoFile);
-                const now = Date.now();
+                try {
+                    const fileToUpload = pendingModalRepoFile;
+                    const title = document.getElementById('fileTitleInput').value.trim();
+                    const fType = document.getElementById('fileTypeInput').value;
+                    const desc = document.getElementById('fileDescInput').value.trim();
 
-                const metaRecord = {
-                    subfolder: 'archivos',
-                    title,
-                    fileType: fType,
-                    description: desc,
-                    authorName: currentUser.name,
-                    createdAt: now,
-                    updatedAt: now
-                };
-                if (driveId) pinMetadataMap[driveId] = metaRecord;
-                pinMetadataMap[title] = metaRecord;
+                    showToast('Subiendo archivo a /archivos y sincronizando...', 'fa-cloud-arrow-up fa-spin text-amber-400');
+                    const outcome = await uploadFileSmart(fileToUpload, title, 'archivos');
+                    const driveId = outcome ? outcome.driveId : null;
+                    const localUrl = URL.createObjectURL(fileToUpload);
+                    const now = Date.now();
 
-                repoFilesData.unshift({
-                    id: 'file-' + (driveId || now),
-                    rawFileName: pendingModalRepoFile.name,
-                    title,
-                    folder: 'archivos',
-                    type: fType,
-                    size: formatBytes(pendingModalRepoFile.size),
-                    author: currentUser.name,
-                    description: desc,
-                    url: driveId ? getDriveEmbedPreviewUrl(driveId) : localUrl,
-                    localUrl: localUrl,
-                    driveFolderId: EXCLUSIVE_DRIVE_FOLDER_ID,
-                    driveId: driveId,
-                    date: formatDateTime(now)
-                });
+                    const metaRecord = {
+                        subfolder: 'archivos',
+                        title,
+                        fileType: fType,
+                        description: desc,
+                        authorName: currentUser.name,
+                        createdAt: now,
+                        updatedAt: now
+                    };
+                    if (driveId) pinMetadataMap[driveId] = metaRecord;
+                    pinMetadataMap[title] = metaRecord;
 
-                await pushDatabaseToDrive([driveId, title].filter(Boolean));
+                    activeRepoTypeFilter = 'all';
+                    repoSearchQuery = '';
+                    const repoSearchInp = document.getElementById('repoSearchInput');
+                    if (repoSearchInp) repoSearchInp.value = '';
 
-                document.getElementById('addFileModal').classList.add('hidden');
-                document.getElementById('addFileForm').reset();
-                document.getElementById('modalRepoFileLabel').textContent = 'Haz clic aquí para elegir el archivo *';
-                pendingModalRepoFile = null;
+                    repoFilesData.unshift({
+                        id: 'file-' + (driveId || now),
+                        rawFileName: fileToUpload.name,
+                        title,
+                        folder: 'archivos',
+                        type: fType,
+                        size: formatBytes(fileToUpload.size),
+                        author: currentUser.name,
+                        description: desc,
+                        url: driveId ? getDriveEmbedPreviewUrl(driveId) : localUrl,
+                        localUrl: localUrl,
+                        driveFolderId: EXCLUSIVE_DRIVE_FOLDER_ID,
+                        driveId: driveId,
+                        date: formatDateTime(now)
+                    });
 
-                renderRepoFolderTabs();
-                renderRepoFiles();
-                renderProfileView();
-                updateCounters();
-                showToast('Archivo subido a /archivos', 'fa-check text-emerald-400');
+                    document.getElementById('addFileModal').classList.add('hidden');
+                    resetAddFileModal();
+
+                    renderRepoFolderTabs();
+                    renderRepoFiles();
+                    renderProfileView();
+                    updateCounters();
+
+                    await pushDatabaseToDrive([driveId, title].filter(Boolean));
+                    await syncFromPrivateDriveFolder(true);
+                    showToast('Archivo subido y sincronizado en /archivos', 'fa-check text-emerald-400');
+                } catch (err) {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Subir a /archivos';
+                    }
+                    showToast('Error al subir el archivo', 'fa-triangle-exclamation text-rose-400');
+                }
             });
 
             const searchInput = document.getElementById('searchInput');
@@ -3541,10 +3956,6 @@
                 inp.value = '';
             });
 
-            document.querySelectorAll('.quick-react-btn').forEach(btn => {
-                btn.addEventListener('click', () => addCommentToCurrentPin(btn.dataset.react));
-            });
-
             // Formularios edición y borrado
             document.getElementById('closeEditPinModalBtn').addEventListener('click', () => document.getElementById('editPinModal').classList.add('hidden'));
             document.getElementById('cancelEditPinBtn').addEventListener('click', () => document.getElementById('editPinModal').classList.add('hidden'));
@@ -3557,7 +3968,7 @@
                 pin.category = document.getElementById('editPinCategoryInput').value.trim();
                 pin.description = document.getElementById('editPinDescInput').value.trim();
                 const rawP = document.getElementById('editPinPeopleInput').value.trim();
-                pin.peopleInPhoto = rawP ? rawP.split(',').map(s => s.trim()).filter(Boolean) : [pin.author.name];
+                pin.peopleInPhoto = rawP ? rawP.split(',').map(s => s.trim()).filter(Boolean) : [];
 
                 document.getElementById('editPinModal').classList.add('hidden');
                 renderCategoryPills();
