@@ -341,6 +341,11 @@
             </div>
 
             <div class="flex items-center gap-1.5 sm:gap-2.5 order-2 lg:order-3">
+                <button type="button" id="openAdminPanelBtn" class="hidden items-center gap-1.5 px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 text-[11px] sm:text-xs font-mono uppercase tracking-wider font-bold transition shadow-md">
+                    <i class="fa-solid fa-user-secret"></i>
+                    <span>Panel Admin</span>
+                </button>
+
                 <button type="button" id="openUploadModalBtn" class="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-[#d4b46a] via-[#c5a059] to-[#a8843e] hover:brightness-110 text-slate-950 font-bold text-[11px] sm:text-xs uppercase tracking-wider rounded-xl shadow-md shadow-amber-500/10 transition transform active:scale-95">
                     <i class="fa-solid fa-plus"></i>
                     <span>Subir Foto</span>
@@ -357,7 +362,7 @@
                         <img id="navUserAvatar" referrerpolicy="no-referrer" src="https://placehold.co/80x80/111622/c5a059?text=US" alt="Avatar" class="w-7 h-7 rounded-lg object-cover border border-amber-500/40">
                         <div class="text-left hidden md:block">
                             <p id="navUserName" class="text-xs font-bold leading-none text-white">Usuario</p>
-                            <p class="text-[9px] font-mono uppercase tracking-widest text-amber-500 leading-tight mt-0.5">● Conectado</p>
+                            <p id="navUserStatusLabel" class="text-[9px] font-mono uppercase tracking-widest text-amber-500 leading-tight mt-0.5">● Conectado</p>
                         </div>
                         <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 ml-0.5"></i>
                     </button>
@@ -367,9 +372,12 @@
                             <img id="dropUserAvatar" referrerpolicy="no-referrer" src="https://placehold.co/80x80/111622/c5a059?text=US" alt="Avatar" class="w-10 h-10 rounded-lg object-cover border border-amber-500/40">
                             <div class="overflow-hidden">
                                 <p id="dropUserName" class="text-sm font-bold text-white truncate">Usuario</p>
-                                <p class="text-[10px] font-mono uppercase tracking-wider text-amber-500 truncate">Sesión activa</p>
+                                <p id="dropUserStatusSub" class="text-[10px] font-mono uppercase tracking-wider text-amber-500 truncate">Sesión activa</p>
                             </div>
                         </div>
+                        <button type="button" id="openAdminFromMenuBtn" class="hidden w-full text-left px-3 py-2 rounded-lg text-xs font-mono uppercase tracking-wider font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500 hover:text-white flex items-center gap-2.5 transition mb-1">
+                            <i class="fa-solid fa-user-secret"></i> Panel Admin Invisible
+                        </button>
                         <button type="button" id="openProfileFromMenuBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-mono uppercase tracking-wider font-medium text-slate-200 hover:bg-amber-500/15 hover:text-amber-300 flex items-center gap-2.5 transition mb-1">
                             <i class="fa-solid fa-id-badge text-amber-400"></i> Mi Perfil y Comunidad
                         </button>
@@ -596,6 +604,10 @@
                                 <i class="fa-solid fa-user-pen"></i>
                                 <span>Editar nombre / contraseña</span>
                             </button>
+                            <button type="button" id="adminDeleteUserFromProfileBtn" class="hidden px-3 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/30 text-xs font-mono font-bold items-center gap-1.5 transition shadow-sm">
+                                <i class="fa-solid fa-user-xmark"></i>
+                                <span>Borrar este usuario</span>
+                            </button>
                         </div>
                         <p id="profileSubtitleText" class="text-xs text-slate-400 mt-1">Gestiona tu foto de perfil y consulta tus publicaciones, likes y comentarios.</p>
                     </div>
@@ -735,6 +747,13 @@
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Título de la foto *</label>
                     <input type="text" id="editPinTitleInput" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
                 </div>
+                <div id="editPinAuthorWrapper" class="hidden p-3.5 rounded-2xl bg-rose-500/5 border border-rose-500/30">
+                    <label class="block text-xs font-bold text-rose-300 mb-1">
+                        <i class="fa-solid fa-user-secret mr-1"></i>Subido por (Cambiar autor de la foto)
+                    </label>
+                    <input type="text" id="editPinAuthorInput" placeholder="Nombre del autor..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <div id="editPinAuthorSuggestions" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Categoría</label>
                     <input type="text" id="editPinCategoryInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
@@ -742,7 +761,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Personas en la foto</label>
-                    <input type="text" id="editPinPeopleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <input type="text" id="editPinPeopleInput" placeholder="Dejar vacío si no sale nadie..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
                     <div id="editPinPeopleSuggestions" class="flex flex-wrap gap-1.5 mt-2"></div>
                 </div>
                 <div>
@@ -774,6 +793,13 @@
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre *</label>
                     <input type="text" id="editFileTitleInput" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
                 </div>
+                <div id="editFileAuthorWrapper" class="hidden p-3.5 rounded-2xl bg-rose-500/5 border border-rose-500/30">
+                    <label class="block text-xs font-bold text-rose-300 mb-1">
+                        <i class="fa-solid fa-user-secret mr-1"></i>Subido por (Cambiar autor del archivo)
+                    </label>
+                    <input type="text" id="editFileAuthorInput" placeholder="Nombre del autor..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <div id="editFileAuthorSuggestions" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Tipo</label>
                     <select id="editFileTypeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
@@ -782,6 +808,7 @@
                         <option value="audio">🎵 Audio</option>
                         <option value="zip">📦 Pack ZIP</option>
                         <option value="game">🎮 Juego</option>
+                        <option value="image">🖼️ Imagen</option>
                     </select>
                 </div>
                 <div>
@@ -796,219 +823,372 @@
         </div>
     </div>
 
+    <!-- PANEL DE CONTROL DE SUPERADMIN INVISIBLE -->
+    <div id="adminControlModal" class="hidden fixed inset-0 z-[78] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md overflow-y-auto">
+        <div class="relative w-full max-w-3xl bg-[#0d1017] border border-rose-500/40 rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in my-auto text-slate-100 max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-rose-500/15 border border-rose-500/40 text-rose-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-user-secret"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Modo Fantasma · Invisible en la Web</span>
+                        <h3 class="font-display text-xl font-bold text-white mt-0.5">Panel de Control Total (Admin)</h3>
+                    </div>
+                </div>
+                <button type="button" id="closeAdminControlModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Gestión de Usuarios -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#080b11] border border-slate-800">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div>
+                            <h4 class="font-display font-bold text-sm sm:text-base text-white flex items-center gap-2">
+                                <i class="fa-solid fa-users-slash text-rose-400"></i>
+                                <span>Gestión y Borrado de Usuarios</span>
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-0.5">Elimina cuentas de usuario. Tu cuenta <code>admin</code> es invisible y nunca aparece en esta lista.</p>
+                        </div>
+                        <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 cursor-pointer">
+                            <input type="checkbox" id="adminDeleteUserContentCheckbox" class="rounded accent-rose-500">
+                            <span>Borrar también sus fotos y archivos al eliminar usuario</span>
+                        </label>
+                    </div>
+                    <div id="adminUsersListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-60 overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- Gestión de Categorías -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#080b11] border border-slate-800">
+                    <div class="mb-3">
+                        <h4 class="font-display font-bold text-sm sm:text-base text-white flex items-center gap-2">
+                            <i class="fa-solid fa-tags text-amber-400"></i>
+                            <span>Gestión y Borrado de Categorías</span>
+                        </h4>
+                        <p class="text-xs text-slate-400 mt-0.5">Al borrar una categoría desaparece de toda la web y se quita de las fotos que la tuvieran.</p>
+                    </div>
+                    <div id="adminCategoriesListContainer" class="flex flex-wrap gap-2 max-h-48 overflow-y-auto"></div>
+                </div>
+
+                <!-- Recordatorio de Permisos Especiales -->
+                <div class="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/25 text-xs text-slate-300 space-y-1.5">
+                    <p class="font-bold text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-shield-halved"></i> Poderes activos en tu sesión invisible:</p>
+                    <p>• Puedes <strong>editar o borrar cualquier foto o archivo</strong> y <strong>cambiar quién lo ha subido</strong> o quién sale en la foto abriéndola y pulsando el icono del lápiz (<i class="fa-solid fa-pen text-amber-400"></i>) o papelera (<i class="fa-solid fa-trash-can text-rose-400"></i>).</p>
+                    <p>• Puedes <strong>borrar cualquier comentario</strong> de cualquier persona pulsando el icono de papelera junto al comentario.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN PARA BORRAR FOTOS, ARCHIVOS, USUARIOS O CATEGORÍAS -->
     <div id="confirmDeleteModal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
-        <div class="relative w-full max-w-md bg-[#0d1017] border border-rose-500/40 rounded-3xl shadow-2xl p-6 text-center animate-fade-in">
+        <div class="relative w-full max-w-md bg-[#0d1017] border border-rose-500/40 rounded-3xl shadow-2xl p-6 text-center animate-fade-in text-slate-100">
             <div class="w-14 h-14 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center text-2xl mx-auto mb-4">
                 <i class="fa-solid fa-trash-can"></i>
             </div>
             <h3 id="confirmDeleteTitle" class="font-display text-lg font-bold text-white">¿Eliminar elemento?</h3>
             <p id="confirmDeleteDesc" class="text-xs text-slate-400 mt-1.5 leading-relaxed">Esta acción eliminará el elemento de ZuloWeb para todo el grupo.</p>
             <div class="flex items-center justify-center gap-3 mt-6">
-                <button type="button" id="cancelDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition">Cancelar</button>
-                <button type="button" id="executeDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white shadow-lg transition">Sí, eliminar</button>
+                <button type="button" id="cancelDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition">
+                    Cancelar
+                </button>
+                <button type="button" id="executeDeleteBtn" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white shadow-lg transition">
+                    Sí, eliminar
+                </button>
             </div>
         </div>
     </div>
 
-    <div id="repoMediaPlayerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-slate-950/90 backdrop-blur-md">
-        <div class="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
-            <div class="p-3.5 sm:px-6 border-b border-slate-800 flex items-center justify-between gap-3">
+    <!-- VISOR / REPRODUCTOR INTERNO DEL REPOSITORIO -->
+    <div id="repoMediaPlayerModal" class="hidden fixed inset-0 z-[65] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+        <div class="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
+            <div class="p-4 sm:px-6 border-b border-slate-800 flex items-center justify-between gap-4">
                 <div class="min-w-0">
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400"><i class="fa-solid fa-shield-halved mr-1"></i>Visor ZuloWeb</span>
-                    <h3 id="playerModalTitle" class="font-display font-bold text-sm sm:text-lg text-white truncate mt-0.5">Archivo</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">
+                        <i class="fa-solid fa-shield-halved mr-1"></i>Visor Privado ZuloWeb
+                    </span>
+                    <h3 id="playerModalTitle" class="font-display font-bold text-base sm:text-lg text-white truncate mt-0.5">Archivo</h3>
                 </div>
-                <button id="closeRepoPlayerBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-white flex items-center justify-center transition shrink-0"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" id="closeRepoPlayerBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-white flex items-center justify-center transition shrink-0">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <div id="playerModalBody" class="p-2 sm:p-6 bg-black flex items-center justify-center min-h-[240px] sm:min-h-[340px] max-h-[68vh] sm:max-h-[75vh]"></div>
-            <div class="px-4 sm:px-6 py-3 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
-                <span id="playerModalMeta" class="truncate max-w-[60%]">Google Drive</span>
-                <a id="playerModalDownloadBtn" href="#" download class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 transition"><i class="fa-solid fa-download"></i> Descargar</a>
+            <div id="playerModalBody" class="p-4 sm:p-6 bg-black flex items-center justify-center min-h-[300px] max-h-[75vh]"></div>
+            <div class="px-6 py-3.5 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+                <span id="playerModalMeta">Alojado en Google Drive</span>
+                <a id="playerModalDownloadBtn" href="#" download class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-download"></i> Descargar
+                </a>
             </div>
         </div>
     </div>
 
-    <div id="addFileModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+    <!-- MODAL SUBIR ARCHIVO A /archivos -->
+    <div id="addFileModal" class="hidden fixed inset-0 z-[65] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
         <div class="relative w-full max-w-lg bg-[#0d1017] border border-amber-500/30 rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in my-auto text-slate-100">
             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
                 <div>
                     <h3 class="font-display text-xl font-bold">Subir Archivo a <code>/archivos</code></h3>
-                    <p class="text-xs text-slate-400">Se guarda en la subcarpeta <code>archivos</code> de Google Drive.</p>
+                    <p class="text-xs text-slate-400">Se guarda directamente en la subcarpeta <code>archivos</code> de Google Drive.</p>
                 </div>
-                <button id="closeAddFileModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" id="closeAddFileModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
+
             <form id="addFileForm" class="space-y-4">
                 <div id="modalRepoFileDrop" class="border-2 border-dashed border-emerald-500/40 hover:border-amber-500 rounded-2xl p-5 text-center cursor-pointer bg-slate-900/50 transition">
                     <input type="file" id="modalRepoFileInput" class="hidden">
                     <i class="fa-solid fa-file-circle-plus text-2xl text-emerald-500 mb-1"></i>
                     <p id="modalRepoFileLabel" class="text-xs font-semibold">Haz clic aquí para elegir el archivo *</p>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre del Archivo *</label>
-                    <input type="text" id="fileTitleInput" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre del Archivo *</label>
+                        <input type="text" id="fileTitleInput" required placeholder="Ej: Documento_Proyecto.pdf"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Carpeta de destino</label>
+                        <div class="w-full px-3.5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>/archivos</span>
+                        </div>
+                    </div>
                 </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Tipo de Archivo</label>
                     <select id="fileTypeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
-                        <option value="doc">📑 Documento</option>
+                        <option value="doc">📑 PDF / Documento</option>
                         <option value="video">🎬 Vídeo</option>
-                        <option value="audio">🎵 Audio</option>
-                        <option value="zip">📦 Pack ZIP</option>
-                        <option value="game">🎮 Juego</option>
+                        <option value="audio">🎵 Música / Audio</option>
+                        <option value="zip">📦 Pack Comprimido (.ZIP)</option>
+                        <option value="game">🎮 Juego / Ejecutable</option>
                         <option value="image">🖼️ Imagen</option>
                     </select>
                 </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Descripción *</label>
-                    <textarea id="fileDescInput" rows="2" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
+                    <textarea id="fileDescInput" rows="2" required placeholder="Describe qué incluye este archivo..."
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
                 </div>
+
                 <div class="flex justify-end gap-2 pt-2">
-                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 text-slate-950 font-bold text-sm shadow-lg transition"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Subir a /archivos</button>
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#d4b46a] via-[#c5a059] to-[#a8843e] text-slate-950 font-bold text-sm shadow-lg transition">
+                        <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Subir a /archivos
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="uploadPinModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+    <!-- MODAL SUBIR FOTO A /fotos -->
+    <div id="uploadPinModal" class="hidden fixed inset-0 z-[65] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
         <div class="relative w-full max-w-xl bg-[#0d1017] border border-amber-500/30 rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in my-auto text-slate-100">
             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
                 <div>
                     <h3 class="font-display text-xl font-bold">Subir Foto a <code>/fotos</code></h3>
-                    <p class="text-xs text-slate-400">Solo imágenes. Se guarda en la subcarpeta <code>fotos</code> de Google Drive.</p>
+                    <p class="text-xs text-slate-400">Solo imágenes. Se guardará en la subcarpeta <code>fotos</code> de Google Drive.</p>
                 </div>
-                <button id="closeUploadModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" id="closeUploadModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
+
             <form id="uploadPinForm" class="space-y-4">
                 <div id="localFileUploadArea" class="border-2 border-dashed border-slate-700 hover:border-amber-500 rounded-2xl p-5 text-center cursor-pointer bg-slate-900/50 transition relative">
                     <input type="file" id="localFileInput" accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/*" class="hidden">
                     <div id="uploadPreviewPlaceholder">
-                        <div class="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center mx-auto mb-2 text-xl"><i class="fa-solid fa-camera-retro"></i></div>
-                        <p class="text-xs sm:text-sm font-bold text-white">Haz clic para elegir tu foto</p>
+                        <div class="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center mx-auto mb-2 text-xl">
+                            <i class="fa-solid fa-camera-retro"></i>
+                        </div>
+                        <p class="text-xs sm:text-sm font-bold text-white">Arrastra aquí tu foto o haz clic para elegirla</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Formatos de imagen (JPG, PNG, WEBP, GIF, AVIF).</p>
                     </div>
                     <div id="uploadPreviewContainer" class="hidden">
                         <img id="uploadImagePreview" src="" alt="Preview" class="max-h-44 mx-auto rounded-xl object-contain mb-2 shadow-md">
-                        <p id="uploadFileNameText" class="text-xs text-emerald-400 font-semibold truncate max-w-xs mx-auto"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <p id="uploadFileNameText" class="text-xs text-emerald-400 font-semibold truncate max-w-xs"></p>
+                            <span id="uploadDetectedRatioBadge" class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-amber-500/20 text-amber-500 border border-amber-500/30">Auto</span>
+                        </div>
                     </div>
                 </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Título de la foto *</label>
-                    <input type="text" id="pinTitleInput" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <input type="text" id="pinTitleInput" required placeholder="Escribe un título..."
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
                 </div>
+
                 <div class="relative" id="categoryComboboxWrapper">
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Categoría (opcional)</label>
-                    <input type="text" id="pinCategoryInput" autocomplete="off" placeholder="Sin categoría o escribe una..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">
+                        Categoría <span class="text-slate-500 font-normal">(opcional — busca o escribe una nueva)</span>
+                    </label>
+                    <div class="relative">
+                        <i class="fa-solid fa-tag absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 text-xs"></i>
+                        <input type="text" id="pinCategoryInput" autocomplete="off"
+                            placeholder="Sin categoría (o escribe para elegir / crear una)..."
+                            class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                        <button type="button" id="toggleCategoryDropdownBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-500 p-1">
+                            <i class="fa-solid fa-chevron-down text-xs transition-transform" id="categoryDropdownChevron"></i>
+                        </button>
+                    </div>
                     <div id="categoryDropdownList" class="hidden absolute left-0 right-0 mt-1.5 max-h-48 overflow-y-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-50 divide-y divide-slate-800"></div>
                 </div>
+
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">¿Quién aparece en la foto?</label>
-                    <input type="text" id="pinPeopleInput" placeholder="Nombres..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">¿Quién aparece en la foto? (opcional, separados por coma)</label>
+                    <input type="text" id="pinPeopleInput" placeholder="Dejar vacío si no sale nadie..."
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
                     <div id="uploadPeopleSelector" class="flex flex-wrap gap-1 mt-1.5"></div>
                 </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Descripción *</label>
-                    <textarea id="pinDescInput" rows="2" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
+                    <textarea id="pinDescInput" rows="2" required placeholder="Añade una descripción..."
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
                 </div>
-                <p id="uploadPinErrorMsg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-xl"><span id="uploadPinErrorText">Error.</span></p>
+
+                <p id="uploadPinErrorMsg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-xl flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="uploadPinErrorText">Selecciona una imagen válida.</span>
+                </p>
+
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" id="cancelUploadBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 text-xs font-semibold">Cancelar</button>
-                    <button type="submit" id="submitWallPinBtn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 text-slate-950 font-bold text-xs sm:text-sm shadow-lg">Subir Foto a /fotos</button>
+                    <button type="submit" id="submitWallPinBtn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#d4b46a] to-[#a8843e] text-slate-950 font-bold text-xs sm:text-sm shadow-lg">
+                        Subir Foto a /fotos
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="pinDetailModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 lg:p-6 bg-slate-950/90 backdrop-blur-xl">
-        <!-- Flechas en pantallas medianas/grandes -->
-        <button id="prevPinBtn" class="hidden lg:flex fixed left-5 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-slate-900/85 hover:bg-amber-500 text-white hover:text-slate-950 border border-white/15 items-center justify-center transition shadow-xl"><i class="fa-solid fa-chevron-left"></i></button>
-        <button id="nextPinBtn" class="hidden lg:flex fixed right-5 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-slate-900/85 hover:bg-amber-500 text-white hover:text-slate-950 border border-white/15 items-center justify-center transition shadow-xl"><i class="fa-solid fa-chevron-right"></i></button>
+    <!-- MODAL DETALLE DE FOTO (ADAPTADO PARA MÓVIL Y ESCRITORIO) -->
+    <div id="pinDetailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-slate-950/90 backdrop-blur-xl overflow-y-auto">
+        <button type="button" id="prevPinBtn" title="Anterior" class="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-slate-900/85 hover:bg-amber-500 text-white hover:text-slate-950 border border-white/15 items-center justify-center transition shadow-xl">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" id="nextPinBtn" title="Siguiente" class="hidden lg:flex fixed right-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-slate-900/85 hover:bg-amber-500 text-white hover:text-slate-950 border border-white/15 items-center justify-center transition shadow-xl">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
 
-        <div class="modal-mobile-sheet relative w-full max-w-6xl bg-[#0d1017] border-t sm:border border-amber-500/30 rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col lg:grid lg:grid-cols-12 max-h-[94vh] lg:max-h-[90vh] overflow-y-auto lg:overflow-hidden">
+        <div class="modal-mobile-sheet relative w-full max-w-6xl bg-[#0d1017] border border-amber-500/30 rounded-2xl sm:rounded-3xl shadow-2xl overflow-y-auto lg:overflow-hidden flex flex-col lg:grid lg:grid-cols-12 my-auto max-h-[92vh]">
             
-            <!-- Cabecera móvil fija arriba para cerrar o editar fácilmente sin perder espacio -->
-            <div class="sticky top-0 z-30 bg-[#0d1017]/95 backdrop-blur-md p-3.5 sm:p-4 border-b border-slate-800 flex lg:hidden items-center justify-between gap-2">
+            <!-- Cabecera móvil sticky -->
+            <div class="flex lg:hidden items-center justify-between p-3 border-b border-slate-800 bg-[#0d1017]/95 backdrop-blur-md sticky top-0 z-20">
                 <button type="button" id="modalAuthorProfileMobileBtn" class="flex items-center gap-2.5 min-w-0 text-left">
-                    <img id="modalAuthorAvatarMobile" referrerpolicy="no-referrer" src="" alt="Autor" class="w-8 h-8 rounded-xl object-cover border border-amber-500/30 shrink-0">
+                    <img id="modalAuthorAvatarMobile" referrerpolicy="no-referrer" src="" alt="Autor" class="w-8 h-8 rounded-lg object-cover border border-amber-500/40 shrink-0">
                     <div class="min-w-0">
-                        <p class="text-[9px] font-mono uppercase tracking-wider text-amber-400/90 leading-none">Subido por</p>
-                        <h4 id="modalAuthorNameMobile" class="text-xs font-bold text-white truncate mt-0.5">Usuario</h4>
+                        <p class="text-[9px] font-mono uppercase tracking-wider text-amber-400">Subido por</p>
+                        <h4 id="modalAuthorNameMobile" class="text-xs font-bold text-white truncate">Usuario</h4>
                     </div>
                 </button>
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <button id="modalEditOwnPinMobileBtn" title="Editar" class="hidden w-8 h-8 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
-                    <button id="modalDeleteOwnPinMobileBtn" title="Borrar" class="hidden w-8 h-8 rounded-full bg-rose-500/15 text-rose-400 flex items-center justify-center"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                    <button id="closePinModalMobileBtn" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+                <div class="flex items-center gap-1.5">
+                    <button type="button" id="modalEditOwnPinMobileBtn" class="hidden w-8 h-8 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button type="button" id="modalDeleteOwnPinMobileBtn" class="hidden w-8 h-8 rounded-full bg-rose-500/15 text-rose-400 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    <button type="button" id="closePinModalMobileBtn" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Contenedor de la imagen con controles táctiles para pasar foto en móvil -->
-            <div class="lg:col-span-7 bg-black flex items-center justify-center relative min-h-[220px] sm:min-h-[320px] lg:min-h-[540px] max-h-[46vh] sm:max-h-[55vh] lg:max-h-[90vh] overflow-hidden shrink-0">
+            <!-- Contenedor de la imagen -->
+            <div class="lg:col-span-7 bg-black flex items-center justify-center relative min-h-[220px] sm:min-h-[320px] lg:min-h-[540px] max-h-[46vh] sm:max-h-[56vh] lg:max-h-[92vh] overflow-hidden shrink-0">
                 <div id="modalMediaContainer" class="w-full h-full flex items-center justify-center"></div>
-                <button type="button" id="prevPinMobileBtn" aria-label="Foto anterior" class="lg:hidden absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/70 text-white border border-white/20 flex items-center justify-center active:scale-95">
-                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                <button type="button" id="prevPinMobileBtn" class="lg:hidden absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white border border-white/20 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-chevron-left"></i>
                 </button>
-                <button type="button" id="nextPinMobileBtn" aria-label="Foto siguiente" class="lg:hidden absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/70 text-white border border-white/20 flex items-center justify-center active:scale-95">
-                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                <button type="button" id="nextPinMobileBtn" class="lg:hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white border border-white/20 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
 
-            <!-- Columna de información, likes y comentarios -->
-            <div class="lg:col-span-5 flex flex-col lg:h-full lg:max-h-[90vh] bg-[#0d1017] text-slate-100 min-h-0">
-                <!-- Cabecera de escritorio -->
-                <div class="hidden lg:flex p-4 sm:p-5 border-b border-slate-800 items-center justify-between gap-2 shrink-0">
-                    <button type="button" id="modalAuthorProfileBtn" class="flex items-center gap-3 min-w-0 text-left group hover:bg-amber-500/10 p-1.5 -m-1.5 rounded-2xl transition">
+            <!-- Panel derecho de información y comentarios -->
+            <div class="lg:col-span-5 flex flex-col lg:h-full lg:max-h-[92vh] bg-[#0d1017] text-slate-100">
+                <div class="hidden lg:flex p-5 border-b border-slate-800 items-center justify-between gap-2">
+                    <button type="button" id="modalAuthorProfileBtn" title="Ver perfil del autor" class="flex items-center gap-3 min-w-0 text-left group hover:bg-amber-500/10 p-1.5 -m-1.5 rounded-2xl transition">
                         <img id="modalAuthorAvatar" referrerpolicy="no-referrer" src="" alt="Autor" class="w-10 h-10 rounded-xl object-cover border border-amber-500/30 group-hover:border-amber-400 shrink-0">
                         <div class="min-w-0">
-                            <p class="text-[10px] font-mono uppercase tracking-wider text-amber-400/90">Subido por</p>
+                            <p class="text-[10px] font-mono uppercase tracking-wider text-amber-400/90 flex items-center gap-1">
+                                <span>Subido por</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-75"></i>
+                            </p>
                             <h4 id="modalAuthorName" class="text-sm font-bold text-white group-hover:text-amber-300 truncate transition">Usuario</h4>
                         </div>
                     </button>
                     <div class="flex items-center gap-2 shrink-0">
                         <span id="modalCategoryBadge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">Categoría</span>
-                        <button id="modalEditOwnPinBtn" title="Editar" class="hidden w-9 h-9 rounded-full bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-slate-950 flex items-center justify-center transition"><i class="fa-solid fa-pen text-xs"></i></button>
-                        <button id="modalDeleteOwnPinBtn" title="Borrar" class="hidden w-9 h-9 rounded-full bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white flex items-center justify-center transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                        <button id="closePinModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" id="modalEditOwnPinBtn" title="Editar foto" class="hidden w-9 h-9 rounded-full bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-slate-950 flex items-center justify-center transition">
+                            <i class="fa-solid fa-pen text-xs"></i>
+                        </button>
+                        <button type="button" id="modalDeleteOwnPinBtn" title="Borrar foto" class="hidden w-9 h-9 rounded-full bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white flex items-center justify-center transition">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                        <button type="button" id="closePinModalBtn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 hover:text-white flex items-center justify-center transition">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Cuerpo de detalles y lista de comentarios (visible completo en móvil y con scroll propio en PC) -->
                 <div class="flex-1 lg:overflow-y-auto p-4 sm:p-5 space-y-4">
                     <div>
                         <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-                            <span id="modalPinTime">Hace 2 horas</span>
+                            <span id="modalPinTime">Hace un momento</span>
                             <span id="modalRatioBadge" class="font-mono">Original</span>
                         </div>
-                        <h3 id="modalPinTitle" class="font-display text-base sm:text-xl font-bold text-white">Título</h3>
-                        <p id="modalPinDescription" class="text-xs sm:text-sm text-slate-300 mt-1.5 leading-relaxed break-words"></p>
+                        <h3 id="modalPinTitle" class="font-display text-lg sm:text-xl font-bold text-white">Título</h3>
+                        <p id="modalPinDescription" class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed"></p>
                     </div>
+
                     <div class="p-3 rounded-2xl bg-slate-900/70 border border-slate-800">
-                        <span class="block text-[11px] font-semibold text-slate-400 mb-2"><i class="fa-solid fa-user-group text-amber-500 mr-1"></i>Quién aparece:</span>
+                        <span class="block text-[11px] font-semibold text-slate-400 mb-2">
+                            <i class="fa-solid fa-user-group text-amber-500 mr-1"></i>Quién aparece en esta foto:
+                        </span>
                         <div id="modalPeopleTags" class="flex flex-wrap gap-1.5"></div>
                     </div>
+
                     <div class="flex flex-col gap-2 p-3 rounded-2xl bg-rose-500/5 border border-rose-500/20">
                         <div class="flex items-center justify-between gap-2">
-                            <button id="modalLikeBtn" class="px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition shadow-sm bg-rose-500 text-white shrink-0">
+                            <button type="button" id="modalLikeBtn" class="px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition shadow-sm bg-rose-500 text-white shrink-0">
                                 <i id="modalLikeIcon" class="fa-solid fa-heart"></i>
                                 <span id="modalLikeCount">0</span>
                             </button>
-                            <button id="modalDownloadPinBtn" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shrink-0"><i class="fa-solid fa-download"></i> Descargar</button>
+                            <button type="button" id="modalDownloadPinBtn" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shrink-0">
+                                <i class="fa-solid fa-download"></i> Descargar
+                            </button>
                         </div>
-                        <div id="modalLikedByText" class="text-xs text-slate-400 flex flex-wrap items-center gap-1.5 pt-1">Sé el primero en darle Me gusta</div>
+                        <div id="modalLikedByText" class="text-xs text-slate-400 flex flex-wrap items-center gap-1.5 pt-1">
+                            Sé el primero en darle Me gusta
+                        </div>
                     </div>
-                    <div class="pb-2">
+
+                    <div>
                         <div class="flex items-center justify-between mb-3">
-                            <h5 class="text-xs font-bold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
-                                <i class="fa-regular fa-comments"></i>
-                                <span>Comentarios (<span id="modalCommentsCount">0</span>)</span>
+                            <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">
+                                Comentarios (<span id="modalCommentsCount">0</span>)
                             </h5>
                         </div>
-                        <div id="modalCommentsList" class="space-y-2.5"></div>
+                        <div id="modalCommentsList" class="space-y-3"></div>
                     </div>
                 </div>
 
-                <!-- Barra de escribir comentario siempre accesible abajo en móvil y escritorio -->
-                <div class="sticky bottom-0 z-30 p-3 sm:p-4 border-t border-slate-800 bg-[#06080c]/95 backdrop-blur-md shrink-0">
+                <div class="p-3.5 sm:p-4 border-t border-slate-800 bg-[#06080c] sticky bottom-0 z-20">
                     <form id="commentForm" class="flex items-center gap-2">
-                        <input type="text" id="commentInput" required placeholder="Escribe un comentario..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-500">
-                        <button type="submit" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm transition shrink-0">Enviar</button>
+                        <input type="text" id="commentInput" required placeholder="Escribe un comentario..."
+                            class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
+                        <button type="submit" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm transition shrink-0">
+                            Enviar
+                        </button>
                     </form>
                 </div>
             </div>
@@ -1056,6 +1236,80 @@
         let activeProfileSubTab = 'photos';
         let pendingDeleteTarget = null;
         const sessionFullImages = {};
+
+        // =========================================================================
+        // SISTEMA DE SUPERADMIN INVISIBLE ("admin") Y BORRADO DE USUARIOS/CATEGORÍAS
+        // =========================================================================
+        const ADMIN_META_KEY = '__zulo_admin_state__';
+        const INVISIBLE_ADMIN_USERNAME = 'admin';
+
+        function getAdminState() {
+            if (!pinMetadataMap[ADMIN_META_KEY] || typeof pinMetadataMap[ADMIN_META_KEY] !== 'object') {
+                pinMetadataMap[ADMIN_META_KEY] = {
+                    adminPassword: SECRET_REGISTER_KEY,
+                    deletedUsers: [],
+                    deletedCategories: [],
+                    updatedAt: 0
+                };
+            }
+            const st = pinMetadataMap[ADMIN_META_KEY];
+            if (!Array.isArray(st.deletedUsers)) st.deletedUsers = [];
+            if (!Array.isArray(st.deletedCategories)) st.deletedCategories = [];
+            if (!st.adminPassword) st.adminPassword = SECRET_REGISTER_KEY;
+            return st;
+        }
+
+        function isSuperAdmin(user = currentUser) {
+            return Boolean(user && (user.isAdmin === true || (user.name && user.name.trim().toLowerCase() === INVISIBLE_ADMIN_USERNAME)));
+        }
+
+        function isInvisibleAdminName(name) {
+            if (!name) return false;
+            const clean = String(name).trim().toLowerCase();
+            return clean === INVISIBLE_ADMIN_USERNAME || clean === ADMIN_META_KEY.toLowerCase();
+        }
+
+        function isUserDeleted(name) {
+            if (!name) return false;
+            const clean = String(name).trim().toLowerCase();
+            return getAdminState().deletedUsers.some(u => String(u).trim().toLowerCase() === clean);
+        }
+
+        function isCategoryDeleted(cat) {
+            if (!cat) return false;
+            const clean = String(cat).trim().toLowerCase();
+            return getAdminState().deletedCategories.some(c => String(c).trim().toLowerCase() === clean);
+        }
+
+        function applyAdminSanitization() {
+            GROUP_MEMBERS = GROUP_MEMBERS.filter(m => m && m.name && !isInvisibleAdminName(m.name) && !isUserDeleted(m.name));
+            customCategories = customCategories.filter(c => c && !isCategoryDeleted(c));
+
+            pinsData.forEach(pin => {
+                if (pin.category && isCategoryDeleted(pin.category)) {
+                    pin.category = '';
+                }
+                if (pin.author && (isInvisibleAdminName(pin.author.name) || isUserDeleted(pin.author.name))) {
+                    pin.author.name = 'Grupo';
+                    pin.author.avatar = getAvatarForUserName('Grupo');
+                }
+                if (Array.isArray(pin.peopleInPhoto)) {
+                    pin.peopleInPhoto = pin.peopleInPhoto.filter(p => p && !isInvisibleAdminName(p) && !isUserDeleted(p));
+                }
+                if (Array.isArray(pin.likes)) {
+                    pin.likes = pin.likes.filter(u => u && !isInvisibleAdminName(u) && !isUserDeleted(u));
+                }
+                if (Array.isArray(pin.comments)) {
+                    pin.comments = pin.comments.filter(c => c && !isInvisibleAdminName(c.author) && !isUserDeleted(c.author));
+                }
+            });
+
+            repoFilesData.forEach(file => {
+                if (file.author && (isInvisibleAdminName(file.author) || isUserDeleted(file.author))) {
+                    file.author = 'Grupo';
+                }
+            });
+        }
 
         const DIRECT_BRIDGE_SAFE_LIMIT = 22 * 1024 * 1024;
 
@@ -1232,6 +1486,104 @@
             try { videoEl.pause(); } catch (e) {}
         }
 
+        async function uploadToPrivateDriveBridge(filename, mimeType, base64String, targetFolder) {
+            if (!PRIVATE_BRIDGE_URL || !base64String) return null;
+            const cleanTarget = targetFolder === 'archivos' ? 'archivos' : 'fotos';
+            try {
+                const res = await fetch(PRIVATE_BRIDGE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        key: SECRET_REGISTER_KEY,
+                        folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
+                        subfolder: cleanTarget,
+                        folder: cleanTarget,
+                        filename: filename,
+                        mimeType: mimeType,
+                        base64: base64String
+                    })
+                });
+                const data = await res.json();
+                return data.id || null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function createAvatarThumbnailDataUrl(file, size = 256, quality = 0.84) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = size;
+                        canvas.height = size;
+                        const ctx = canvas.getContext('2d');
+                        const minSide = Math.min(img.naturalWidth, img.naturalHeight);
+                        const sx = (img.naturalWidth - minSide) / 2;
+                        const sy = (img.naturalHeight - minSide) / 2;
+                        ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+                        const webp = canvas.toDataURL('image/webp', quality);
+                        resolve(webp.startsWith('data:image/webp') ? webp : canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = () => resolve(ev.target.result);
+                    img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function updateCurrentUserAvatar(file) {
+            if (!currentUser || !file) return;
+            const newAvatarDataUrl = await createAvatarThumbnailDataUrl(file, 220, 0.80);
+            if (!newAvatarDataUrl) return;
+
+            currentUser.avatar = newAvatarDataUrl;
+            const myNameLower = currentUser.name.toLowerCase();
+
+            GROUP_MEMBERS.forEach(m => {
+                if (m.name.toLowerCase() === myNameLower) {
+                    m.avatar = newAvatarDataUrl;
+                }
+            });
+
+            pinsData.forEach(pin => {
+                if ((pin.author?.name || '').toLowerCase() === myNameLower) {
+                    pin.author.avatar = newAvatarDataUrl;
+                }
+                (pin.comments || []).forEach(c => {
+                    if ((c.author || '').toLowerCase() === myNameLower) {
+                        c.avatar = newAvatarDataUrl;
+                    }
+                });
+            });
+
+            const touchedKeys = [];
+            Object.keys(pinMetadataMap).forEach(k => {
+                if (k === ADMIN_META_KEY) return;
+                const meta = pinMetadataMap[k];
+                if (meta && (meta.authorName || '').toLowerCase() === myNameLower) {
+                    meta.authorAvatar = newAvatarDataUrl;
+                    touchedKeys.push(k);
+                }
+                if (meta && Array.isArray(meta.comments)) {
+                    meta.comments.forEach(c => {
+                        if ((c.author || '').toLowerCase() === myNameLower) {
+                            c.avatar = newAvatarDataUrl;
+                            touchedKeys.push(k);
+                        }
+                    });
+                }
+            });
+
+            updateHeaderProfile();
+            renderMasonryWall();
+            renderProfileView();
+            await pushDatabaseToDrive(Array.from(new Set(touchedKeys)));
+            showToast('Foto de perfil actualizada', 'fa-camera text-emerald-400');
+        }
+
         async function pushDatabaseToDrive(changedPinKeys = [], options = {}) {
             saveLocalCache();
             if (!PRIVATE_BRIDGE_URL) return;
@@ -1244,10 +1596,26 @@
                     });
                     const checkData = await checkRes.json();
                     if (checkData && checkData.db) {
+                        // Sincronizar primero el estado de administración (usuarios y categorías borradas)
+                        if (checkData.db.pinMetadataMap && checkData.db.pinMetadataMap[ADMIN_META_KEY]) {
+                            const remoteAdmin = checkData.db.pinMetadataMap[ADMIN_META_KEY];
+                            const localAdmin = getAdminState();
+                            const mergedDeletedUsers = Array.from(new Set([...(localAdmin.deletedUsers || []), ...(remoteAdmin.deletedUsers || [])]));
+                            const mergedDeletedCats = Array.from(new Set([...(localAdmin.deletedCategories || []), ...(remoteAdmin.deletedCategories || [])]));
+                            const useRemotePass = (Number(remoteAdmin.updatedAt) || 0) > (Number(localAdmin.updatedAt) || 0);
+                            pinMetadataMap[ADMIN_META_KEY] = {
+                                adminPassword: useRemotePass ? (remoteAdmin.adminPassword || localAdmin.adminPassword) : (localAdmin.adminPassword || remoteAdmin.adminPassword),
+                                deletedUsers: mergedDeletedUsers,
+                                deletedCategories: mergedDeletedCats,
+                                updatedAt: Math.max(Number(localAdmin.updatedAt) || 0, Number(remoteAdmin.updatedAt) || 0)
+                            };
+                        }
+
                         const renamedFromLower = options.renamedFrom ? options.renamedFrom.toLowerCase() : null;
                         if (Array.isArray(checkData.db.users)) {
                             checkData.db.users.forEach(remoteU => {
                                 if (!remoteU || !remoteU.name) return;
+                                if (isInvisibleAdminName(remoteU.name) || isUserDeleted(remoteU.name)) return;
                                 if (renamedFromLower && remoteU.name.toLowerCase() === renamedFromLower) return;
 
                                 const idx = GROUP_MEMBERS.findIndex(m =>
@@ -1263,13 +1631,14 @@
                         }
                         if (Array.isArray(checkData.db.categories)) {
                             checkData.db.categories.forEach(c => {
-                                if (c && !customCategories.some(existing => existing.toLowerCase() === c.toLowerCase())) {
+                                if (c && !isCategoryDeleted(c) && !customCategories.some(existing => existing.toLowerCase() === c.toLowerCase())) {
                                     customCategories.push(c);
                                 }
                             });
                         }
                         if (checkData.db.pinMetadataMap && typeof checkData.db.pinMetadataMap === 'object') {
                             Object.keys(checkData.db.pinMetadataMap).forEach(k => {
+                                if (k === ADMIN_META_KEY) return;
                                 const remoteMeta = checkData.db.pinMetadataMap[k];
                                 const localMeta = pinMetadataMap[k];
                                 if (!remoteMeta) return;
@@ -1528,92 +1897,33 @@
             if (!currentUser) return;
             const navAvatar = document.getElementById('navUserAvatar');
             const navUserName = document.getElementById('navUserName');
+            const navStatusLabel = document.getElementById('navUserStatusLabel');
             const dropUserAvatar = document.getElementById('dropUserAvatar');
             const dropUserName = document.getElementById('dropUserName');
+            const dropStatusSub = document.getElementById('dropUserStatusSub');
+            const openAdminBtn = document.getElementById('openAdminPanelBtn');
+            const openAdminMenuBtn = document.getElementById('openAdminFromMenuBtn');
+
+            const adminMode = isSuperAdmin(currentUser);
 
             if (navAvatar) navAvatar.src = currentUser.avatar;
-            if (navUserName) navUserName.textContent = currentUser.name;
+            if (navUserName) navUserName.textContent = adminMode ? 'Admin (Invisible)' : currentUser.name;
+            if (navStatusLabel) {
+                navStatusLabel.textContent = adminMode ? '● Modo Fantasma' : '● Conectado';
+                navStatusLabel.className = adminMode
+                    ? 'text-[9px] font-mono uppercase tracking-widest text-rose-400 leading-tight mt-0.5'
+                    : 'text-[9px] font-mono uppercase tracking-widest text-amber-500 leading-tight mt-0.5';
+            }
             if (dropUserAvatar) dropUserAvatar.src = currentUser.avatar;
-            if (dropUserName) dropUserName.textContent = currentUser.name;
-        }
+            if (dropUserName) dropUserName.textContent = adminMode ? 'Superadmin' : currentUser.name;
+            if (dropStatusSub) dropStatusSub.textContent = adminMode ? 'Perfil 100% Invisible' : 'Sesión activa';
 
-        function createAvatarThumbnailDataUrl(file, size = 256, quality = 0.84) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = size;
-                        canvas.height = size;
-                        const ctx = canvas.getContext('2d');
-                        const minSide = Math.min(img.naturalWidth, img.naturalHeight);
-                        const sx = (img.naturalWidth - minSide) / 2;
-                        const sy = (img.naturalHeight - minSide) / 2;
-                        ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
-                        const webp = canvas.toDataURL('image/webp', quality);
-                        resolve(webp.startsWith('data:image/webp') ? webp : canvas.toDataURL('image/jpeg', quality));
-                    };
-                    img.onerror = () => resolve(ev.target.result);
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function updateCurrentUserAvatar(file) {
-            if (!currentUser || !file) return;
-            const newAvatarDataUrl = await createAvatarThumbnailDataUrl(file, 220, 0.80);
-            if (!newAvatarDataUrl) return;
-
-            currentUser.avatar = newAvatarDataUrl;
-            const myNameLower = currentUser.name.toLowerCase();
-
-            GROUP_MEMBERS.forEach(m => {
-                if (m.name.toLowerCase() === myNameLower) {
-                    m.avatar = newAvatarDataUrl;
-                }
-            });
-
-            pinsData.forEach(pin => {
-                if ((pin.author?.name || '').toLowerCase() === myNameLower) {
-                    pin.author.avatar = newAvatarDataUrl;
-                }
-                (pin.comments || []).forEach(c => {
-                    if ((c.author || '').toLowerCase() === myNameLower) {
-                        c.avatar = newAvatarDataUrl;
-                    }
-                });
-            });
-
-            updateHeaderProfile();
-            renderMasonryWall();
-            renderProfileView();
-            await pushDatabaseToDrive();
-            showToast('Foto de perfil actualizada', 'fa-camera text-emerald-400');
-        }
-
-        async function uploadToPrivateDriveBridge(filename, mimeType, base64String, targetFolder) {
-            if (!PRIVATE_BRIDGE_URL || !base64String) return null;
-            const cleanTarget = targetFolder === 'archivos' ? 'archivos' : 'fotos';
-            try {
-                const res = await fetch(PRIVATE_BRIDGE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({
-                        key: SECRET_REGISTER_KEY,
-                        folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
-                        subfolder: cleanTarget,
-                        folder: cleanTarget,
-                        filename: filename,
-                        mimeType: mimeType,
-                        base64: base64String
-                    })
-                });
-                const data = await res.json();
-                return data.id || null;
-            } catch (e) {
-                return null;
+            if (openAdminBtn) {
+                openAdminBtn.classList.toggle('hidden', !adminMode);
+                openAdminBtn.classList.toggle('flex', adminMode);
+            }
+            if (openAdminMenuBtn) {
+                openAdminMenuBtn.classList.toggle('hidden', !adminMode);
             }
         }
 
@@ -1632,9 +1942,22 @@
                 const data = await res.json();
 
                 if (data.db) {
+                    if (data.db.pinMetadataMap && data.db.pinMetadataMap[ADMIN_META_KEY]) {
+                        const remoteAdmin = data.db.pinMetadataMap[ADMIN_META_KEY];
+                        const localAdmin = getAdminState();
+                        const useRemotePass = (Number(remoteAdmin.updatedAt) || 0) >= (Number(localAdmin.updatedAt) || 0);
+                        pinMetadataMap[ADMIN_META_KEY] = {
+                            adminPassword: useRemotePass ? (remoteAdmin.adminPassword || localAdmin.adminPassword) : localAdmin.adminPassword,
+                            deletedUsers: Array.from(new Set([...(localAdmin.deletedUsers || []), ...(remoteAdmin.deletedUsers || [])])),
+                            deletedCategories: Array.from(new Set([...(localAdmin.deletedCategories || []), ...(remoteAdmin.deletedCategories || [])])),
+                            updatedAt: Math.max(Number(localAdmin.updatedAt) || 0, Number(remoteAdmin.updatedAt) || 0)
+                        };
+                    }
+
                     if (Array.isArray(data.db.users) && data.db.users.length > 0) {
                         data.db.users.forEach(remoteUser => {
                             if (!remoteUser || !remoteUser.name) return;
+                            if (isInvisibleAdminName(remoteUser.name) || isUserDeleted(remoteUser.name)) return;
                             const existingIdx = GROUP_MEMBERS.findIndex(m =>
                                 (m.id && remoteUser.id && m.id === remoteUser.id) ||
                                 m.name.toLowerCase() === remoteUser.name.toLowerCase()
@@ -1648,23 +1971,29 @@
                                 };
                             }
                         });
-                        if (currentUser) {
-                            const myUpdated = GROUP_MEMBERS.find(m =>
-                                (m.id && currentUser.id && m.id === currentUser.id) ||
-                                m.name.toLowerCase() === currentUser.name.toLowerCase()
-                            );
-                            if (myUpdated) {
-                                currentUser.name = myUpdated.name;
-                                if (myUpdated.password) currentUser.password = myUpdated.password;
-                                if (myUpdated.avatar) currentUser.avatar = myUpdated.avatar;
-                                updateHeaderProfile();
+                        if (currentUser && !isSuperAdmin(currentUser)) {
+                            if (isUserDeleted(currentUser.name)) {
+                                localStorage.removeItem(SESSION_USER_KEY);
+                                currentUser = null;
+                                document.getElementById('loginScreen').classList.remove('hidden');
+                            } else {
+                                const myUpdated = GROUP_MEMBERS.find(m =>
+                                    (m.id && currentUser.id && m.id === currentUser.id) ||
+                                    m.name.toLowerCase() === currentUser.name.toLowerCase()
+                                );
+                                if (myUpdated) {
+                                    currentUser.name = myUpdated.name;
+                                    if (myUpdated.password) currentUser.password = myUpdated.password;
+                                    if (myUpdated.avatar) currentUser.avatar = myUpdated.avatar;
+                                    updateHeaderProfile();
+                                }
                             }
                         }
                     }
 
                     if (Array.isArray(data.db.categories)) {
                         data.db.categories.forEach(c => {
-                            if (c && !customCategories.some(existing => existing.toLowerCase() === c.toLowerCase())) {
+                            if (c && !isCategoryDeleted(c) && !customCategories.some(existing => existing.toLowerCase() === c.toLowerCase())) {
                                 customCategories.push(c);
                             }
                         });
@@ -1672,6 +2001,7 @@
 
                     if (data.db.pinMetadataMap && typeof data.db.pinMetadataMap === 'object') {
                         Object.keys(data.db.pinMetadataMap).forEach(k => {
+                            if (k === ADMIN_META_KEY) return;
                             const remoteMeta = data.db.pinMetadataMap[k] || {};
                             const localMeta = pinMetadataMap[k] || {};
 
@@ -1787,6 +2117,7 @@
 
                 pinsData = newPins;
                 repoFilesData = newRepoFiles;
+                applyAdminSanitization();
 
                 renderCategoryPills();
                 renderPersonFilterChips();
@@ -1795,6 +2126,7 @@
                 renderRepoFolderTabs();
                 renderRepoFiles();
                 renderProfileView();
+                renderAdminControlModal();
                 updateCounters();
 
                 if (currentOpenPinId) {
@@ -1818,9 +2150,9 @@
         }
 
         function getAllAvailableCategories() {
-            const set = new Set(customCategories);
+            const set = new Set(customCategories.filter(c => c && !isCategoryDeleted(c)));
             pinsData.forEach(pin => {
-                if (pin.category && pin.category.trim()) {
+                if (pin.category && pin.category.trim() && !isCategoryDeleted(pin.category.trim())) {
                     set.add(pin.category.trim());
                 }
             });
@@ -1832,6 +2164,7 @@
             if (!container) return;
 
             const categories = getAllAvailableCategories();
+            const adminMode = isSuperAdmin();
             const allBtnClass = activeCategory === 'all'
                 ? 'bg-amber-500 text-slate-950 shadow-sm'
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700';
@@ -1851,9 +2184,16 @@
                     ? 'bg-amber-500 text-slate-950 shadow-sm'
                     : 'bg-slate-800 text-slate-300 hover:bg-slate-700';
                 html += `
-                    <button type="button" data-cat="${cat}" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${cls}">
-                        <i class="fa-solid fa-hashtag text-[10px] opacity-70 mr-0.5"></i>${cat}
-                    </button>
+                    <div class="inline-flex items-center rounded-xl overflow-hidden shrink-0 ${cls}">
+                        <button type="button" data-cat="${cat}" class="cat-btn px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition">
+                            <i class="fa-solid fa-hashtag text-[10px] opacity-70 mr-0.5"></i>${cat}
+                        </button>
+                        ${adminMode ? `
+                            <button type="button" data-admin-del-cat="${cat}" title="Borrar categoría #${cat}" class="admin-del-cat-pill px-2 py-2 text-[10px] hover:bg-rose-600 hover:text-white transition border-l border-black/20">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        ` : ''}
+                    </div>
                 `;
             });
 
@@ -1872,32 +2212,33 @@
                     renderMasonryWall();
                 });
             });
+
+            container.querySelectorAll('.admin-del-cat-pill').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    requestDeleteItem('category', btn.dataset.adminDelCat);
+                });
+            });
         }
 
         function getAllKnownUserNames() {
             const map = new Map();
-            GROUP_MEMBERS.forEach(m => {
-                if (m.name) map.set(m.name.toLowerCase(), m.name);
-            });
+            const addIfValid = (rawName) => {
+                if (!rawName) return;
+                const clean = String(rawName).trim();
+                if (!clean || clean.toLowerCase() === 'grupo') return;
+                if (isInvisibleAdminName(clean) || isUserDeleted(clean)) return;
+                map.set(clean.toLowerCase(), clean);
+            };
+
+            GROUP_MEMBERS.forEach(m => addIfValid(m.name));
             pinsData.forEach(pin => {
-                if (pin.author?.name && pin.author.name !== 'Grupo') {
-                    map.set(pin.author.name.toLowerCase(), pin.author.name);
-                }
-                (pin.peopleInPhoto || []).forEach(person => {
-                    if (person && person !== 'Grupo') map.set(person.toLowerCase(), person);
-                });
-                (pin.likes || []).forEach(liker => {
-                    if (liker) map.set(liker.toLowerCase(), liker);
-                });
-                (pin.comments || []).forEach(c => {
-                    if (c.author) map.set(c.author.toLowerCase(), c.author);
-                });
+                addIfValid(pin.author?.name);
+                (pin.peopleInPhoto || []).forEach(person => addIfValid(person));
+                (pin.likes || []).forEach(liker => addIfValid(liker));
+                (pin.comments || []).forEach(c => addIfValid(c.author));
             });
-            repoFilesData.forEach(f => {
-                if (f.author && f.author !== 'Grupo') {
-                    map.set(f.author.toLowerCase(), f.author);
-                }
-            });
+            repoFilesData.forEach(f => addIfValid(f.author));
             return Array.from(map.values());
         }
 
@@ -2194,7 +2535,7 @@
                 catBadge.classList.add('hidden');
             }
 
-            const isMine = currentUser && authorName.toLowerCase() === currentUser.name.toLowerCase();
+            const isMine = currentUser && (authorName.toLowerCase() === currentUser.name.toLowerCase() || isSuperAdmin());
             const editOwnBtn = document.getElementById('modalEditOwnPinBtn');
             const deleteOwnBtn = document.getElementById('modalDeleteOwnPinBtn');
             const editOwnMobileBtn = document.getElementById('modalEditOwnPinMobileBtn');
@@ -2346,7 +2687,7 @@
 
             listEl.innerHTML = pin.comments.map((c, idx) => {
                 const timeLabel = c.createdAt ? formatDateTime(c.createdAt) : (c.time || '');
-                const isMyComment = myName && (c.author || '').toLowerCase() === myName;
+                const canDeleteComment = (myName && (c.author || '').toLowerCase() === myName) || isSuperAdmin();
                 const avatarSrc = getAvatarForUserName(c.author);
                 return `
                 <div class="flex items-start gap-2.5 bg-slate-900/60 p-3 rounded-2xl border border-slate-800 group">
@@ -2360,8 +2701,8 @@
                             </button>
                             <div class="flex items-center gap-2 shrink-0">
                                 <span class="text-[10px] text-slate-400">${timeLabel}</span>
-                                ${isMyComment ? `
-                                    <button type="button" data-delete-comment-index="${idx}" title="Eliminar mi comentario"
+                                ${canDeleteComment ? `
+                                    <button type="button" data-delete-comment-index="${idx}" title="Eliminar comentario"
                                         class="delete-comment-btn text-slate-400 hover:text-rose-500 transition text-xs px-1">
                                         <i class="fa-regular fa-trash-can"></i>
                                     </button>
@@ -2398,7 +2739,7 @@
             const targetComment = pin.comments[commentIdx];
             if (!targetComment) return;
 
-            if ((targetComment.author || '').toLowerCase() !== currentUser.name.toLowerCase()) {
+            if (!isSuperAdmin() && (targetComment.author || '').toLowerCase() !== currentUser.name.toLowerCase()) {
                 return;
             }
 
@@ -2572,7 +2913,7 @@
 
             grid.innerHTML = filtered.map(file => {
                 const meta = iconMap[file.type] || iconMap.doc;
-                const isMine = currentUser && (file.author || '').toLowerCase() === currentUser.name.toLowerCase();
+                const isMine = currentUser && ((file.author || '').toLowerCase() === currentUser.name.toLowerCase() || isSuperAdmin());
 
                 return `
                     <div class="bg-[#0d1017] border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/50 transition shadow-sm">
@@ -2674,7 +3015,7 @@
             if (!bar) return;
 
             const allNames = getAllKnownUserNames();
-            if (currentUser && !allNames.some(n => n.toLowerCase() === currentUser.name.toLowerCase())) {
+            if (currentUser && !isSuperAdmin(currentUser) && !allNames.some(n => n.toLowerCase() === currentUser.name.toLowerCase())) {
                 allNames.unshift(currentUser.name);
             }
 
@@ -2794,9 +3135,13 @@
             dropdown.querySelectorAll('.cat-combo-create').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const newCat = btn.dataset.createCat.trim();
-                    if (newCat && !customCategories.some(c => c.toLowerCase() === newCat.toLowerCase())) {
-                        customCategories.push(newCat);
-                        pushDatabaseToDrive();
+                    if (newCat) {
+                        const adminSt = getAdminState();
+                        adminSt.deletedCategories = adminSt.deletedCategories.filter(c => c.toLowerCase() !== newCat.toLowerCase());
+                        if (!customCategories.some(c => c.toLowerCase() === newCat.toLowerCase())) {
+                            customCategories.push(newCat);
+                        }
+                        pushDatabaseToDrive([ADMIN_META_KEY]);
                     }
                     input.value = newCat;
                     renderCategoryPills();
@@ -2835,9 +3180,15 @@
             if (!currentUser && !inspectedProfileUser) return;
             updateHeaderProfile();
 
-            const targetName = (inspectedProfileUser || (currentUser ? currentUser.name : 'Usuario')).trim();
+            const knownMembers = getAllKnownUserNames();
+            if (isSuperAdmin(currentUser) && (!inspectedProfileUser || isInvisibleAdminName(inspectedProfileUser))) {
+                inspectedProfileUser = knownMembers[0] || 'Grupo';
+            }
+
+            const targetName = (inspectedProfileUser || (currentUser && !isSuperAdmin(currentUser) ? currentUser.name : (knownMembers[0] || 'Grupo'))).trim();
             const targetNameLower = targetName.toLowerCase();
-            const isOwnProfile = Boolean(currentUser && currentUser.name.trim().toLowerCase() === targetNameLower);
+            const isOwnProfile = Boolean(currentUser && !isSuperAdmin(currentUser) && currentUser.name.trim().toLowerCase() === targetNameLower);
+            const canManageTargetContent = isOwnProfile || isSuperAdmin();
 
             renderMembersDirectoryBar(targetName);
 
@@ -2847,18 +3198,26 @@
             const profileSubtitleText = document.getElementById('profileSubtitleText');
             const changeAvatarBtn = document.getElementById('changeAvatarBtn');
             const openEditProfileBtn = document.getElementById('openEditProfileBtn');
+            const adminDeleteUserBtn = document.getElementById('adminDeleteUserFromProfileBtn');
             const backToMyOwnBtn = document.getElementById('backToMyOwnProfileBtn');
 
             if (profileBigAvatar) profileBigAvatar.src = getAvatarForUserName(targetName);
             if (profileUserName) profileUserName.textContent = `@${targetName}`;
             if (changeAvatarBtn) changeAvatarBtn.classList.toggle('hidden', !isOwnProfile);
             if (openEditProfileBtn) openEditProfileBtn.classList.toggle('hidden', !isOwnProfile);
-            if (backToMyOwnBtn) backToMyOwnBtn.classList.toggle('hidden', isOwnProfile);
+            if (backToMyOwnBtn) backToMyOwnBtn.classList.toggle('hidden', isOwnProfile || isSuperAdmin());
+
+            if (adminDeleteUserBtn) {
+                const canDeleteThisUser = isSuperAdmin() && targetNameLower !== 'grupo' && !isInvisibleAdminName(targetName);
+                adminDeleteUserBtn.classList.toggle('hidden', !canDeleteThisUser);
+                adminDeleteUserBtn.classList.toggle('flex', canDeleteThisUser);
+                adminDeleteUserBtn.onclick = () => requestDeleteItem('user', targetName);
+            }
 
             if (profileRoleBadge) {
                 profileRoleBadge.innerHTML = isOwnProfile
                     ? `<i class="fa-solid fa-user-check"></i> Tu Perfil Personal`
-                    : `<i class="fa-solid fa-eye"></i> Perfil de @${targetName}`;
+                    : (isSuperAdmin() ? `<i class="fa-solid fa-user-secret text-rose-400"></i> Moderando Perfil de @${targetName}` : `<i class="fa-solid fa-eye"></i> Perfil de @${targetName}`);
             }
             if (profileSubtitleText) {
                 profileSubtitleText.textContent = isOwnProfile
@@ -2926,7 +3285,7 @@
                                         <span><i class="fa-solid fa-comment text-amber-400 mr-1"></i>${pin.comments.length}</span>
                                     </div>
                                     <div class="flex items-center gap-1.5">
-                                        ${isOwnProfile ? `
+                                        ${canManageTargetContent ? `
                                             <button type="button" data-edit-pin="${pin.id}" class="profile-edit-pin-btn px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-slate-950 font-bold text-xs transition" title="Editar"><i class="fa-solid fa-pen"></i></button>
                                             <button type="button" data-delete-pin="${pin.id}" class="profile-delete-pin-btn px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white font-bold text-xs transition" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
                                         ` : ''}
@@ -2967,7 +3326,7 @@
                             </div>
                             <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
                                 <button type="button" data-play-my-file="${file.id}" class="profile-play-file-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-emerald-500 text-slate-200 hover:text-slate-950 text-xs font-bold transition"><i class="fa-solid fa-eye mr-1"></i> Ver</button>
-                                ${isOwnProfile ? `
+                                ${canManageTargetContent ? `
                                     <div class="flex items-center gap-1.5">
                                         <button type="button" data-edit-my-file="${file.id}" class="profile-edit-file-btn px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-slate-950 text-xs font-bold transition"><i class="fa-solid fa-pen"></i></button>
                                         <button type="button" data-delete-my-file="${file.id}" class="profile-delete-file-btn px-2.5 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold transition"><i class="fa-solid fa-trash-can"></i></button>
@@ -3061,6 +3420,65 @@
             document.getElementById('editPinCategoryInput').value = pin.category || '';
             document.getElementById('editPinPeopleInput').value = (pin.peopleInPhoto || []).join(', ');
             document.getElementById('editPinDescInput').value = pin.description || '';
+
+            const authorWrapper = document.getElementById('editPinAuthorWrapper');
+            const authorInput = document.getElementById('editPinAuthorInput');
+            const authorSugg = document.getElementById('editPinAuthorSuggestions');
+            if (authorWrapper && authorInput) {
+                const adminMode = isSuperAdmin();
+                authorWrapper.classList.toggle('hidden', !adminMode);
+                authorInput.value = pin.author?.name || 'Grupo';
+                if (adminMode && authorSugg) {
+                    const names = ['Grupo', ...getAllKnownUserNames()];
+                    authorSugg.innerHTML = names.map(n => `
+                        <button type="button" data-set-pin-author="${n}" class="px-2 py-0.5 rounded-lg text-[11px] bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-slate-300 border border-slate-700 transition">
+                            @${n}
+                        </button>
+                    `).join('');
+                    authorSugg.querySelectorAll('[data-set-pin-author]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            authorInput.value = btn.dataset.setPinAuthor;
+                        });
+                    });
+                }
+            }
+
+            const catSugg = document.getElementById('editPinCategorySuggestions');
+            if (catSugg) {
+                const cats = getAllAvailableCategories();
+                catSugg.innerHTML = cats.map(c => `
+                    <button type="button" data-set-pin-cat="${c}" class="px-2 py-0.5 rounded-lg text-[11px] bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-amber-400 border border-slate-800 transition">
+                        #${c}
+                    </button>
+                `).join('');
+                catSugg.querySelectorAll('[data-set-pin-cat]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.getElementById('editPinCategoryInput').value = btn.dataset.setPinCat;
+                    });
+                });
+            }
+
+            const peopleSugg = document.getElementById('editPinPeopleSuggestions');
+            if (peopleSugg) {
+                const people = getAllKnownUserNames();
+                peopleSugg.innerHTML = people.map(p => `
+                    <button type="button" data-toggle-pin-person="${p}" class="px-2 py-0.5 rounded-lg text-[11px] bg-slate-900 hover:bg-amber-500/20 text-slate-300 border border-slate-800 transition">
+                        + ${p}
+                    </button>
+                `).join('');
+                peopleSugg.querySelectorAll('[data-toggle-pin-person]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const inp = document.getElementById('editPinPeopleInput');
+                        const person = btn.dataset.togglePinPerson;
+                        const current = inp.value.split(',').map(s => s.trim()).filter(Boolean);
+                        const idx = current.findIndex(x => x.toLowerCase() === person.toLowerCase());
+                        if (idx === -1) current.push(person);
+                        else current.splice(idx, 1);
+                        inp.value = current.join(', ');
+                    });
+                });
+            }
+
             document.getElementById('editPinModal').classList.remove('hidden');
         }
 
@@ -3071,12 +3489,125 @@
             document.getElementById('editFileTitleInput').value = file.title || '';
             document.getElementById('editFileTypeInput').value = file.type || 'doc';
             document.getElementById('editFileDescInput').value = file.description || '';
+
+            const authorWrapper = document.getElementById('editFileAuthorWrapper');
+            const authorInput = document.getElementById('editFileAuthorInput');
+            const authorSugg = document.getElementById('editFileAuthorSuggestions');
+            if (authorWrapper && authorInput) {
+                const adminMode = isSuperAdmin();
+                authorWrapper.classList.toggle('hidden', !adminMode);
+                authorInput.value = file.author || 'Grupo';
+                if (adminMode && authorSugg) {
+                    const names = ['Grupo', ...getAllKnownUserNames()];
+                    authorSugg.innerHTML = names.map(n => `
+                        <button type="button" data-set-file-author="${n}" class="px-2 py-0.5 rounded-lg text-[11px] bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-slate-300 border border-slate-700 transition">
+                            @${n}
+                        </button>
+                    `).join('');
+                    authorSugg.querySelectorAll('[data-set-file-author]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            authorInput.value = btn.dataset.setFileAuthor;
+                        });
+                    });
+                }
+            }
+
             document.getElementById('editFileModal').classList.remove('hidden');
+        }
+
+        function renderAdminControlModal() {
+            if (!isSuperAdmin()) return;
+            const usersContainer = document.getElementById('adminUsersListContainer');
+            const catsContainer = document.getElementById('adminCategoriesListContainer');
+
+            if (usersContainer) {
+                const allUsers = getAllKnownUserNames();
+                if (allUsers.length === 0) {
+                    usersContainer.innerHTML = `<p class="text-xs text-slate-500 italic col-span-2 py-3 text-center">No hay usuarios activos en este momento.</p>`;
+                } else {
+                    usersContainer.innerHTML = allUsers.map(uName => {
+                        const avatar = getAvatarForUserName(uName);
+                        const photosCount = pinsData.filter(p => (p.author?.name || '').toLowerCase() === uName.toLowerCase()).length;
+                        const filesCount = repoFilesData.filter(f => (f.author || '').toLowerCase() === uName.toLowerCase()).length;
+                        return `
+                            <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-900/90 border border-slate-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <img src="${avatar}" referrerpolicy="no-referrer" alt="${uName}" class="w-8 h-8 rounded-lg object-cover border border-amber-500/30 shrink-0">
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-bold text-white truncate">@${uName}</p>
+                                        <p class="text-[10px] font-mono text-slate-400">${photosCount} fotos · ${filesCount} arch.</p>
+                                    </div>
+                                </div>
+                                <button type="button" data-admin-delete-user="${uName}" class="admin-del-user-btn px-2.5 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white text-xs font-bold transition shrink-0 flex items-center gap-1">
+                                    <i class="fa-solid fa-user-xmark"></i> Borrar
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+
+                    usersContainer.querySelectorAll('.admin-del-user-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            requestDeleteItem('user', btn.dataset.adminDeleteUser);
+                        });
+                    });
+                }
+            }
+
+            if (catsContainer) {
+                const allCats = getAllAvailableCategories();
+                if (allCats.length === 0) {
+                    catsContainer.innerHTML = `<p class="text-xs text-slate-500 italic py-2">No hay categorías creadas.</p>`;
+                } else {
+                    catsContainer.innerHTML = allCats.map(cat => {
+                        const count = pinsData.filter(p => (p.category || '').toLowerCase() === cat.toLowerCase()).length;
+                        return `
+                            <div class="inline-flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+                                <span class="text-amber-400 font-semibold">#${cat}</span>
+                                <span class="text-[10px] font-mono text-slate-400">(${count})</span>
+                                <button type="button" data-admin-delete-cat="${cat}" class="admin-del-cat-btn w-6 h-6 rounded-lg bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white flex items-center justify-center transition" title="Eliminar categoría">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+
+                    catsContainer.querySelectorAll('.admin-del-cat-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            requestDeleteItem('category', btn.dataset.adminDeleteCat);
+                        });
+                    });
+                }
+            }
         }
 
         function requestDeleteItem(type, id) {
             pendingDeleteTarget = { type, id };
             const modal = document.getElementById('confirmDeleteModal');
+            const titleEl = document.getElementById('confirmDeleteTitle');
+            const descEl = document.getElementById('confirmDeleteDesc');
+
+            if (type === 'pin') {
+                const pin = pinsData.find(p => p.id === id);
+                if (titleEl) titleEl.textContent = `¿Eliminar foto "${pin ? pin.title : ''}"?`;
+                if (descEl) descEl.textContent = 'Esta acción eliminará la fotografía de ZuloWeb para todo el grupo.';
+            } else if (type === 'file') {
+                const file = repoFilesData.find(f => f.id === id);
+                if (titleEl) titleEl.textContent = `¿Eliminar archivo "${file ? file.title : ''}"?`;
+                if (descEl) descEl.textContent = 'Esta acción eliminará el archivo del repositorio de ZuloWeb.';
+            } else if (type === 'user') {
+                const delContentCheck = document.getElementById('adminDeleteUserContentCheckbox');
+                const alsoDeleteContent = Boolean(delContentCheck && delContentCheck.checked);
+                if (titleEl) titleEl.textContent = `¿Eliminar al usuario @${id}?`;
+                if (descEl) {
+                    descEl.textContent = alsoDeleteContent
+                        ? `Se eliminará la cuenta de @${id}, sus likes, sus comentarios y TAMBIÉN todas sus fotos y archivos subidos.`
+                        : `Se eliminará la cuenta de @${id}, sus likes, etiquetas y comentarios. Sus fotos y archivos se conservarán bajo el nombre "Grupo".`;
+                }
+            } else if (type === 'category') {
+                if (titleEl) titleEl.textContent = `¿Eliminar la categoría "#${id}"?`;
+                if (descEl) descEl.textContent = `La categoría "#${id}" desaparecerá de la web y se quitará de todas las fotos que la tuvieran asignada.`;
+            }
+
             modal.classList.remove('hidden');
         }
 
@@ -3096,8 +3627,11 @@
                     pinsData.splice(pinIndex, 1);
                     if (currentOpenPinId === id) closePinDetailModal();
                     await pushDatabaseToDrive(keysToMark);
+                    renderCategoryPills();
+                    renderPersonFilterChips();
                     renderMasonryWall();
                     renderProfileView();
+                    renderAdminControlModal();
                     updateCounters();
                     showToast('Foto eliminada', 'fa-trash-can text-rose-400');
                 }
@@ -3113,9 +3647,127 @@
                     await pushDatabaseToDrive(keysToMark);
                     renderRepoFiles();
                     renderProfileView();
+                    renderAdminControlModal();
                     updateCounters();
                     showToast('Archivo eliminado', 'fa-trash-can text-rose-400');
                 }
+            } else if (type === 'user') {
+                const targetLower = String(id).trim().toLowerCase();
+                const delContentCheck = document.getElementById('adminDeleteUserContentCheckbox');
+                const alsoDeleteContent = Boolean(delContentCheck && delContentCheck.checked);
+                const adminSt = getAdminState();
+                if (!adminSt.deletedUsers.some(u => u.toLowerCase() === targetLower)) {
+                    adminSt.deletedUsers.push(String(id).trim());
+                }
+                adminSt.updatedAt = Date.now();
+
+                GROUP_MEMBERS = GROUP_MEMBERS.filter(m => m.name.toLowerCase() !== targetLower);
+
+                const touchedKeys = [ADMIN_META_KEY];
+
+                if (alsoDeleteContent) {
+                    pinsData.filter(p => (p.author?.name || '').toLowerCase() === targetLower).forEach(pin => {
+                        [pin.driveId, pin.rawFileName, pin.title].filter(Boolean).forEach(k => {
+                            pinMetadataMap[k] = { ...(pinMetadataMap[k] || {}), deleted: true, updatedAt: Date.now() };
+                            touchedKeys.push(k);
+                        });
+                    });
+                    pinsData = pinsData.filter(p => (p.author?.name || '').toLowerCase() !== targetLower);
+
+                    repoFilesData.filter(f => (f.author || '').toLowerCase() === targetLower).forEach(file => {
+                        [file.driveId, file.rawFileName, file.title].filter(Boolean).forEach(k => {
+                            pinMetadataMap[k] = { ...(pinMetadataMap[k] || {}), deleted: true, updatedAt: Date.now() };
+                            touchedKeys.push(k);
+                        });
+                    });
+                    repoFilesData = repoFilesData.filter(f => (f.author || '').toLowerCase() !== targetLower);
+                }
+
+                Object.keys(pinMetadataMap).forEach(k => {
+                    if (k === ADMIN_META_KEY) return;
+                    const meta = pinMetadataMap[k];
+                    if (!meta || typeof meta !== 'object') return;
+                    let changed = false;
+
+                    if ((meta.authorName || '').toLowerCase() === targetLower) {
+                        if (alsoDeleteContent) {
+                            meta.deleted = true;
+                        } else {
+                            meta.authorName = 'Grupo';
+                            meta.authorAvatar = '';
+                        }
+                        changed = true;
+                    }
+                    if (Array.isArray(meta.peopleInPhoto) && meta.peopleInPhoto.some(p => p.toLowerCase() === targetLower)) {
+                        meta.peopleInPhoto = meta.peopleInPhoto.filter(p => p.toLowerCase() !== targetLower);
+                        changed = true;
+                    }
+                    if (Array.isArray(meta.likes) && meta.likes.some(u => u.toLowerCase() === targetLower)) {
+                        meta.likes = meta.likes.filter(u => u.toLowerCase() !== targetLower);
+                        changed = true;
+                    }
+                    if (Array.isArray(meta.comments) && meta.comments.some(c => (c.author || '').toLowerCase() === targetLower)) {
+                        meta.comments = meta.comments.filter(c => (c.author || '').toLowerCase() !== targetLower);
+                        changed = true;
+                    }
+
+                    if (changed) {
+                        meta.updatedAt = Date.now();
+                        touchedKeys.push(k);
+                    }
+                });
+
+                applyAdminSanitization();
+                if (activePersonFilter.toLowerCase() === targetLower) activePersonFilter = '';
+                if (inspectedProfileUser && inspectedProfileUser.toLowerCase() === targetLower) {
+                    const remaining = getAllKnownUserNames();
+                    inspectedProfileUser = remaining[0] || 'Grupo';
+                }
+
+                renderCategoryPills();
+                renderPersonFilterChips();
+                renderUploadPeopleSelector();
+                renderMasonryWall();
+                renderRepoFiles();
+                renderProfileView();
+                renderAdminControlModal();
+                updateCounters();
+                await pushDatabaseToDrive(Array.from(new Set(touchedKeys)));
+                showToast(`Usuario @${id} eliminado`, 'fa-user-xmark text-rose-400');
+            } else if (type === 'category') {
+                const catLower = String(id).trim().toLowerCase();
+                const adminSt = getAdminState();
+                if (!adminSt.deletedCategories.some(c => c.toLowerCase() === catLower)) {
+                    adminSt.deletedCategories.push(String(id).trim());
+                }
+                adminSt.updatedAt = Date.now();
+
+                customCategories = customCategories.filter(c => c.toLowerCase() !== catLower);
+                if (activeCategory.toLowerCase() === catLower) activeCategory = 'all';
+
+                const touchedKeys = [ADMIN_META_KEY];
+                pinsData.forEach(pin => {
+                    if ((pin.category || '').toLowerCase() === catLower) {
+                        pin.category = '';
+                    }
+                });
+
+                Object.keys(pinMetadataMap).forEach(k => {
+                    if (k === ADMIN_META_KEY) return;
+                    const meta = pinMetadataMap[k];
+                    if (meta && (meta.category || '').toLowerCase() === catLower) {
+                        meta.category = '';
+                        meta.updatedAt = Date.now();
+                        touchedKeys.push(k);
+                    }
+                });
+
+                renderCategoryPills();
+                renderMasonryWall();
+                renderProfileView();
+                renderAdminControlModal();
+                await pushDatabaseToDrive(Array.from(new Set(touchedKeys)));
+                showToast(`Categoría #${id} eliminada`, 'fa-trash-can text-rose-400');
             }
             pendingDeleteTarget = null;
         }
@@ -3129,7 +3781,7 @@
             const percentText = document.getElementById('directUploadPercentText');
 
             progressBox.classList.remove('hidden');
-            const authorName = currentUser ? currentUser.name : 'Grupo';
+            const authorName = (currentUser && !isSuperAdmin(currentUser)) ? currentUser.name : 'Grupo';
             const changedKeys = [];
 
             try {
@@ -3268,11 +3920,47 @@
 
                 if (!username || !pass) return;
 
-                let existingMember = GROUP_MEMBERS.find(m => m.name.toLowerCase() === username.toLowerCase());
-                if (!existingMember && initialSyncPromise) {
-                    await initialSyncPromise;
-                    existingMember = GROUP_MEMBERS.find(m => m.name.toLowerCase() === username.toLowerCase());
+                if (initialSyncPromise) {
+                    try { await initialSyncPromise; } catch (e) {}
                 }
+
+                // Acceso exclusivo e invisible para la cuenta maestra "admin"
+                if (username.toLowerCase() === INVISIBLE_ADMIN_USERNAME) {
+                    if (authMode === 'register') {
+                        loginErrorText.textContent = 'La cuenta admin ya está integrada. Usa Iniciar Sesión.';
+                        loginErrorMsg.classList.remove('hidden');
+                        return;
+                    }
+                    const adminSt = getAdminState();
+                    const expectedAdminPass = adminSt.adminPassword || SECRET_REGISTER_KEY;
+                    if (pass !== expectedAdminPass) {
+                        loginErrorText.textContent = 'Contraseña de administrador incorrecta.';
+                        loginErrorMsg.classList.remove('hidden');
+                        return;
+                    }
+                    currentUser = {
+                        id: 'superadmin-invisible',
+                        name: INVISIBLE_ADMIN_USERNAME,
+                        isAdmin: true,
+                        invisible: true,
+                        avatar: 'https://placehold.co/100x100/0a0d14/f43f5e?text=AD'
+                    };
+                    const known = getAllKnownUserNames();
+                    inspectedProfileUser = known[0] || 'Grupo';
+                    saveLocalCache();
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    updateHeaderProfile();
+                    renderCategoryPills();
+                    renderPersonFilterChips();
+                    renderMasonryWall();
+                    renderRepoFiles();
+                    renderProfileView();
+                    renderAdminControlModal();
+                    showToast('Sesión iniciada en Modo Admin Invisible', 'fa-user-secret text-rose-400');
+                    return;
+                }
+
+                let existingMember = GROUP_MEMBERS.find(m => m.name.toLowerCase() === username.toLowerCase());
 
                 if (authMode === 'register') {
                     if (inviteKey !== SECRET_REGISTER_KEY) {
@@ -3285,24 +3973,31 @@
                         loginErrorMsg.classList.remove('hidden');
                         return;
                     }
-                    if (existingMember) {
+                    if (existingMember && !isUserDeleted(username)) {
                         loginErrorText.textContent = 'Ese usuario ya existe.';
                         loginErrorMsg.classList.remove('hidden');
                         return;
                     }
+
+                    // Si el nombre había sido borrado anteriormente, permitir recrearlo limpiando la lista de borrados
+                    const adminSt = getAdminState();
+                    adminSt.deletedUsers = adminSt.deletedUsers.filter(u => u.toLowerCase() !== username.toLowerCase());
+                    adminSt.updatedAt = Date.now();
+
                     const newMember = {
                         id: 'user-' + Date.now(),
                         name: username,
                         password: pass,
                         avatar: `https://placehold.co/100x100/111622/c5a059?text=${encodeURIComponent(username.slice(0, 2).toUpperCase())}`
                     };
+                    GROUP_MEMBERS = GROUP_MEMBERS.filter(m => m.name.toLowerCase() !== username.toLowerCase());
                     GROUP_MEMBERS.push(newMember);
                     currentUser = { ...newMember };
                     inspectedProfileUser = currentUser.name;
                     saveLocalCache();
-                    pushDatabaseToDrive();
+                    pushDatabaseToDrive([ADMIN_META_KEY]);
                 } else {
-                    if (!existingMember || existingMember.password !== pass) {
+                    if (!existingMember || isUserDeleted(username) || existingMember.password !== pass) {
                         loginErrorText.textContent = 'Usuario o contraseña incorrectos.';
                         loginErrorMsg.classList.remove('hidden');
                         return;
@@ -3314,6 +4009,8 @@
 
                 document.getElementById('loginScreen').classList.add('hidden');
                 updateHeaderProfile();
+                renderCategoryPills();
+                renderPersonFilterChips();
                 renderMasonryWall();
                 renderRepoFiles();
                 renderProfileView();
@@ -3374,7 +4071,9 @@
             function openEditProfileModal() {
                 if (!currentUser) return;
                 document.getElementById('userDropdown').classList.add('hidden');
-                document.getElementById('editProfileNameInput').value = currentUser.name || '';
+                const nameInput = document.getElementById('editProfileNameInput');
+                nameInput.value = currentUser.name || '';
+                nameInput.disabled = isSuperAdmin(currentUser);
                 document.getElementById('editProfileNewPassInput').value = '';
                 document.getElementById('editProfileConfirmPassInput').value = '';
                 document.getElementById('editProfileErrorMsg').classList.add('hidden');
@@ -3382,26 +4081,36 @@
             }
 
             const openEditProfileBtn = document.getElementById('openEditProfileBtn');
-            if (openEditProfileBtn) openEditProfileBtn.addEventListener('click', openEditProfileModal);
-
             const openEditProfileFromMenuBtn = document.getElementById('openEditProfileFromMenuBtn');
-            if (openEditProfileFromMenuBtn) openEditProfileFromMenuBtn.addEventListener('click', openEditProfileModal);
-
-            document.getElementById('closeEditProfileModalBtn').addEventListener('click', () => {
-                document.getElementById('editProfileModal').classList.add('hidden');
-            });
-            document.getElementById('cancelEditProfileBtn').addEventListener('click', () => {
-                document.getElementById('editProfileModal').classList.add('hidden');
-            });
-
+            const closeEditProfileModalBtn = document.getElementById('closeEditProfileModalBtn');
+            const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
             const toggleEditProfilePassBtn = document.getElementById('toggleEditProfilePassBtn');
+
+            if (openEditProfileBtn) openEditProfileBtn.addEventListener('click', openEditProfileModal);
+            if (openEditProfileFromMenuBtn) openEditProfileFromMenuBtn.addEventListener('click', openEditProfileModal);
+            if (closeEditProfileModalBtn) closeEditProfileModalBtn.addEventListener('click', () => document.getElementById('editProfileModal').classList.add('hidden'));
+            if (cancelEditProfileBtn) cancelEditProfileBtn.addEventListener('click', () => document.getElementById('editProfileModal').classList.add('hidden'));
             if (toggleEditProfilePassBtn) {
                 toggleEditProfilePassBtn.addEventListener('click', () => {
-                    const newPassInp = document.getElementById('editProfileNewPassInput');
-                    const confPassInp = document.getElementById('editProfileConfirmPassInput');
-                    const nextType = newPassInp.type === 'password' ? 'text' : 'password';
-                    newPassInp.type = nextType;
-                    confPassInp.type = nextType;
+                    const inp = document.getElementById('editProfileNewPassInput');
+                    if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
+                });
+            }
+
+            const openAdminPanelBtn = document.getElementById('openAdminPanelBtn');
+            const openAdminFromMenuBtn = document.getElementById('openAdminFromMenuBtn');
+            const closeAdminControlModalBtn = document.getElementById('closeAdminControlModalBtn');
+            function openAdminControlModal() {
+                if (!isSuperAdmin()) return;
+                document.getElementById('userDropdown').classList.add('hidden');
+                renderAdminControlModal();
+                document.getElementById('adminControlModal').classList.remove('hidden');
+            }
+            if (openAdminPanelBtn) openAdminPanelBtn.addEventListener('click', openAdminControlModal);
+            if (openAdminFromMenuBtn) openAdminFromMenuBtn.addEventListener('click', openAdminControlModal);
+            if (closeAdminControlModalBtn) {
+                closeAdminControlModalBtn.addEventListener('click', () => {
+                    document.getElementById('adminControlModal').classList.add('hidden');
                 });
             }
 
@@ -3457,6 +4166,18 @@
                 saveBtn.textContent = 'Guardando...';
 
                 try {
+                    if (isSuperAdmin(currentUser)) {
+                        if (newPass) {
+                            const adminSt = getAdminState();
+                            adminSt.adminPassword = newPass;
+                            adminSt.updatedAt = Date.now();
+                            await pushDatabaseToDrive([ADMIN_META_KEY]);
+                            showToast('Contraseña de Admin Invisible actualizada', 'fa-key text-emerald-400');
+                        }
+                        document.getElementById('editProfileModal').classList.add('hidden');
+                        return;
+                    }
+
                     if (!currentUser.id) currentUser.id = 'user-' + Date.now();
                     currentUser.name = newName;
                     if (newPass) currentUser.password = newPass;
@@ -3785,8 +4506,12 @@
                     const rawPeople = document.getElementById('pinPeopleInput').value.trim();
                     const people = rawPeople ? rawPeople.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-                    if (category && !customCategories.some(c => c.toLowerCase() === category.toLowerCase())) {
-                        customCategories.push(category);
+                    if (category) {
+                        const adminSt = getAdminState();
+                        adminSt.deletedCategories = adminSt.deletedCategories.filter(c => c.toLowerCase() !== category.toLowerCase());
+                        if (!customCategories.some(c => c.toLowerCase() === category.toLowerCase())) {
+                            customCategories.push(category);
+                        }
                     }
 
                     const resBlob = await (await fetch(originalDataUrl)).blob();
@@ -3804,6 +4529,8 @@
                     }
 
                     const now = Date.now();
+                    const effectiveAuthorName = isSuperAdmin(currentUser) ? 'Grupo' : currentUser.name;
+                    const effectiveAuthorAvatar = isSuperAdmin(currentUser) ? getAvatarForUserName('Grupo') : currentUser.avatar;
                     const newPin = {
                         id: 'pin-' + (driveId || now),
                         driveId: driveId || null,
@@ -3817,7 +4544,7 @@
                         fullLocalUrl: originalDataUrl,
                         localPreviewUrl: compressedPreview || originalDataUrl,
                         folderId: EXCLUSIVE_DRIVE_FOLDER_ID,
-                        author: { name: currentUser.name, avatar: currentUser.avatar },
+                        author: { name: effectiveAuthorName, avatar: effectiveAuthorAvatar },
                         peopleInPhoto: people,
                         timestamp: formatDateTime(now),
                         createdAt: now,
@@ -3900,13 +4627,14 @@
                     const driveId = outcome ? outcome.driveId : null;
                     const localUrl = URL.createObjectURL(fileToUpload);
                     const now = Date.now();
+                    const effectiveFileAuthor = isSuperAdmin(currentUser) ? 'Grupo' : currentUser.name;
 
                     const metaRecord = {
                         subfolder: 'archivos',
                         title,
                         fileType: fType,
                         description: desc,
-                        authorName: currentUser.name,
+                        authorName: effectiveFileAuthor,
                         createdAt: now,
                         updatedAt: now
                     };
@@ -3925,7 +4653,7 @@
                         folder: 'archivos',
                         type: fType,
                         size: formatBytes(fileToUpload.size),
-                        author: currentUser.name,
+                        author: effectiveFileAuthor,
                         description: desc,
                         url: driveId ? getDriveEmbedPreviewUrl(driveId) : localUrl,
                         localUrl: localUrl,
@@ -4066,16 +4794,34 @@
                 const pin = pinsData.find(p => p.id === id);
                 if (!pin) return;
                 pin.title = document.getElementById('editPinTitleInput').value.trim();
-                pin.category = document.getElementById('editPinCategoryInput').value.trim();
+                const newCat = document.getElementById('editPinCategoryInput').value.trim();
+                pin.category = newCat;
+                if (newCat) {
+                    const adminSt = getAdminState();
+                    adminSt.deletedCategories = adminSt.deletedCategories.filter(c => c.toLowerCase() !== newCat.toLowerCase());
+                    if (!customCategories.some(c => c.toLowerCase() === newCat.toLowerCase())) {
+                        customCategories.push(newCat);
+                    }
+                }
                 pin.description = document.getElementById('editPinDescInput').value.trim();
                 const rawP = document.getElementById('editPinPeopleInput').value.trim();
                 pin.peopleInPhoto = rawP ? rawP.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+                if (isSuperAdmin()) {
+                    const newAuthor = document.getElementById('editPinAuthorInput').value.trim() || 'Grupo';
+                    const safeAuthor = isInvisibleAdminName(newAuthor) ? 'Grupo' : newAuthor;
+                    pin.author = {
+                        name: safeAuthor,
+                        avatar: getAvatarForUserName(safeAuthor)
+                    };
+                }
 
                 document.getElementById('editPinModal').classList.add('hidden');
                 renderCategoryPills();
                 renderPersonFilterChips();
                 renderMasonryWall();
                 renderProfileView();
+                renderAdminControlModal();
                 if (currentOpenPinId === id) openPinDetailModal(id);
                 await savePinMeta(pin);
                 showToast('Foto actualizada', 'fa-check text-emerald-400');
@@ -4091,6 +4837,11 @@
                 file.title = document.getElementById('editFileTitleInput').value.trim();
                 file.type = document.getElementById('editFileTypeInput').value;
                 file.description = document.getElementById('editFileDescInput').value.trim();
+
+                if (isSuperAdmin()) {
+                    const newAuthor = document.getElementById('editFileAuthorInput').value.trim() || 'Grupo';
+                    file.author = isInvisibleAdminName(newAuthor) ? 'Grupo' : newAuthor;
+                }
 
                 const keys = [file.driveId, file.rawFileName, file.title].filter(Boolean);
                 keys.forEach(k => {
@@ -4109,6 +4860,7 @@
                 renderRepoFolderTabs();
                 renderRepoFiles();
                 renderProfileView();
+                renderAdminControlModal();
                 await pushDatabaseToDrive(keys);
                 showToast('Archivo actualizado', 'fa-check text-emerald-400');
             });
